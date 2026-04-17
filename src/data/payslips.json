@@ -1,0 +1,311 @@
+[
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 1,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 23268,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-04-2025 - 30-04-2025.pdf",
+        "description": null,
+        "createTime": "2025-05-01T10:00:00.000+0000"
+      },
+      "accessToken": "0dd95477-5805-4728-bfb4-eaa88aed113a"
+    },
+    "payrollDate": "2025-04-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5600.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1389.25, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4210.75, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1389.25, "currency": "USD" },
+      { "key": "GROSS", "amount": 5600.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 112.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 89.6 },
+      { "label": "Income tax", "amount": 1187.65 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5600.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 2,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 23100,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-03-2025 - 31-03-2025.pdf",
+        "description": null,
+        "createTime": "2025-04-01T10:00:00.000+0000"
+      },
+      "accessToken": "30dfac5f-b669-479c-86c8-063e7cdb9dae"
+    },
+    "payrollDate": "2025-03-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5550.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1365.4, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4184.6, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1365.4, "currency": "USD" },
+      { "key": "GROSS", "amount": 5550.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 110.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 88.4 },
+      { "label": "Income tax", "amount": 1167.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5550.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 3,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 23050,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-02-2025 - 28-02-2025.pdf",
+        "description": null,
+        "createTime": "2025-03-01T10:00:00.000+0000"
+      },
+      "accessToken": "04067b5f-f067-41fd-af89-64c87be0d71b"
+    },
+    "payrollDate": "2025-02-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5480.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1342.1, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4137.9, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1342.1, "currency": "USD" },
+      { "key": "GROSS", "amount": 5480.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 108.5 },
+      { "label": "Employee unemployment insurance tax", "amount": 87.2 },
+      { "label": "Income tax", "amount": 1146.4 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5480.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 4,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 23020,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-01-2025 - 31-01-2025.pdf",
+        "description": null,
+        "createTime": "2025-02-01T10:00:00.000+0000"
+      },
+      "accessToken": "72360e60-15e4-4187-9795-68fbdcc4293c"
+    },
+    "payrollDate": "2025-01-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5400.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1320.5, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4079.5, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1320.5, "currency": "USD" },
+      { "key": "GROSS", "amount": 5400.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 107.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 85.5 },
+      { "label": "Income tax", "amount": 1128.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5400.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 5,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22988,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-06-2025 - 30-06-2025.pdf",
+        "description": null,
+        "createTime": "2025-07-01T10:00:00.000+0000"
+      },
+      "accessToken": "3d71a9f0-3927-46c6-8008-10df35e03f94"
+    },
+    "payrollDate": "2025-06-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 4800.0, "currency": "EUR" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1180.0, "currency": "EUR" },
+      { "key": "NET PAY", "amount": 3620.0, "currency": "EUR" },
+      { "key": "DEDUCTIONS", "amount": 1180.0, "currency": "EUR" },
+      { "key": "GROSS", "amount": 4800.0, "currency": "EUR" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 95.0 },
+      { "label": "Social contributions", "amount": 485.0 },
+      { "label": "Income tax", "amount": 600.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 4800.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 6,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22950,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-05-2025 - 31-05-2025.pdf",
+        "description": null,
+        "createTime": "2025-06-01T10:00:00.000+0000"
+      },
+      "accessToken": "9df53eee-698e-45af-9841-0be89dd1c20f"
+    },
+    "payrollDate": "2025-05-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 4750.0, "currency": "EUR" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1165.25, "currency": "EUR" },
+      { "key": "NET PAY", "amount": 3584.75, "currency": "EUR" },
+      { "key": "DEDUCTIONS", "amount": 1165.25, "currency": "EUR" },
+      { "key": "GROSS", "amount": 4750.0, "currency": "EUR" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 93.5 },
+      { "label": "Social contributions", "amount": 478.75 },
+      { "label": "Income tax", "amount": 593.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 4750.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 7,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22800,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-12-2024 - 31-12-2024.pdf",
+        "description": null,
+        "createTime": "2025-01-05T10:00:00.000+0000"
+      },
+      "accessToken": "a1111111-1111-4111-8111-111111111111"
+    },
+    "payrollDate": "2024-12-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5300.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1295.0, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4005.0, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1295.0, "currency": "USD" },
+      { "key": "GROSS", "amount": 5300.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 105.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 84.0 },
+      { "label": "Income tax", "amount": 1106.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5300.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 8,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22750,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-11-2024 - 30-11-2024.pdf",
+        "description": null,
+        "createTime": "2024-12-02T10:00:00.000+0000"
+      },
+      "accessToken": "b2222222-2222-4222-8222-222222222222"
+    },
+    "payrollDate": "2024-11-01",
+    "status": "Pending",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5280.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1288.0, "currency": "USD" },
+      { "key": "NET PAY", "amount": 3992.0, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1288.0, "currency": "USD" },
+      { "key": "GROSS", "amount": 5280.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 104.5 },
+      { "label": "Employee unemployment insurance tax", "amount": 83.5 },
+      { "label": "Income tax", "amount": 1100.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5280.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 9,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22720,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-07-2025 - 31-07-2025.pdf",
+        "description": null,
+        "createTime": "2025-08-01T10:00:00.000+0000"
+      },
+      "accessToken": "c3333333-3333-4333-8333-333333333333"
+    },
+    "payrollDate": "2025-07-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5650.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1395.5, "currency": "USD" },
+      { "key": "NET PAY", "amount": 4254.5, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1395.5, "currency": "USD" },
+      { "key": "GROSS", "amount": 5650.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 113.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 90.4 },
+      { "label": "Income tax", "amount": 1192.1 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5650.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 10,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22680,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-04-2024 - 30-04-2024.pdf",
+        "description": null,
+        "createTime": "2024-05-01T10:00:00.000+0000"
+      },
+      "accessToken": "d4444444-4444-4444-8444-444444444444"
+    },
+    "payrollDate": "2024-04-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 5100.0, "currency": "USD" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1245.0, "currency": "USD" },
+      { "key": "NET PAY", "amount": 3855.0, "currency": "USD" },
+      { "key": "DEDUCTIONS", "amount": 1245.0, "currency": "USD" },
+      { "key": "GROSS", "amount": 5100.0, "currency": "USD" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 102.0 },
+      { "label": "Employee unemployment insurance tax", "amount": 81.5 },
+      { "label": "Income tax", "amount": 1061.5 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 5100.0 }]
+  },
+  {
+    "viewerEmails": ["ted.ferguson@example.com"],
+    "fileAttachment": {
+      "id": 11,
+      "file": {
+        "mimeType": "application/pdf",
+        "size": 22650,
+        "label": "Payslip - TF2019-Ted Ferguson - 01-04-2024 - 30-04-2024 EUR.pdf",
+        "description": null,
+        "createTime": "2024-05-01T11:00:00.000+0000"
+      },
+      "accessToken": "e5555555-5555-4555-8555-555555555555"
+    },
+    "payrollDate": "2024-04-01",
+    "payslipEntries": [
+      { "key": "ENTITLEMENTS", "amount": 4500.0, "currency": "EUR" },
+      { "key": "TOTAL DEDUCTIONS", "amount": 1100.0, "currency": "EUR" },
+      { "key": "NET PAY", "amount": 3400.0, "currency": "EUR" },
+      { "key": "DEDUCTIONS", "amount": 1100.0, "currency": "EUR" },
+      { "key": "GROSS", "amount": 4500.0, "currency": "EUR" }
+    ],
+    "deductionLines": [
+      { "label": "Funded pension", "amount": 90.0 },
+      { "label": "Social contributions", "amount": 455.0 },
+      { "label": "Income tax", "amount": 555.0 }
+    ],
+    "entitlementLines": [{ "label": "62100 - Basic Salary", "amount": 4500.0 }]
+  }
+]

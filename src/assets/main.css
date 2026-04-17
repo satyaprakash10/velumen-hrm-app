@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --Component-Button-tab-button-tab: #001738;
+  --theme-nav-header-bg: #001738;
+  --Global-Border-border-subtle-02: #e5e7eb;
+  --Global-Text-Text-text-primary: #111827;
+  /* Thin scrollbar “kit”: track + thumb with crisp 1px borders */
+  --scrollbar-kit-track: #f1f5f9;
+  --scrollbar-kit-thumb: #94a3b8;
+  --scrollbar-kit-border: #cbd5e1;
+  --scrollbar-kit-thumb-border: #64748b;
+}
+
+html {
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease;
+}
+
+html.dark {
+  color-scheme: dark;
+  --scrollbar-kit-track: rgba(15, 23, 42, 0.45);
+  --scrollbar-kit-thumb: #475569;
+  --scrollbar-kit-border: #334155;
+  --scrollbar-kit-thumb-border: #94a3b8;
+}
+
+@layer base {
+  body {
+    @apply text-gray-900 font-sans m-0;
+    background-color: #f0f2f5;
+    transition:
+      background-color 0.28s ease,
+      color 0.28s ease;
+  }
+
+  .dark body {
+    @apply bg-slate-950 text-gray-100;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-primary-600 text-white rounded-lg font-medium
+           hover:bg-primary-700 transition-colors duration-200;
+  }
+
+  .page-title {
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--Global-Text-Text-text-primary);
+  }
+
+  .dark .page-title {
+    color: #f3f4f6;
+  }
+
+  .payslip-scroll-x {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .payslip-slip-name-scroll {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .payslip-slip-name-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .payslip-scrollbar {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #f1f5f9;
+  }
+
+  .payslip-scrollbar::-webkit-scrollbar {
+    height: 11px;
+    width: 11px;
+  }
+
+  .payslip-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 6px;
+  }
+
+  .payslip-scrollbar::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 6px;
+    border: 2px solid #f1f5f9;
+  }
+
+  .payslip-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+
+  /**
+   * App-wide thin scrollbar with bordered track/thumb (Firefox + WebKit).
+   * Use on overflow containers: main, sidebar nav, kanban columns, tables.
+   */
+  .scrollbar-kit {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-kit-thumb) var(--scrollbar-kit-track);
+  }
+
+  .scrollbar-kit::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-kit::-webkit-scrollbar-track {
+    background: var(--scrollbar-kit-track);
+    border: 1px solid var(--scrollbar-kit-border);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-kit::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-kit-thumb);
+    border: 1px solid var(--scrollbar-kit-thumb-border);
+    border-radius: 9999px;
+    background-clip: padding-box;
+  }
+
+  .scrollbar-kit::-webkit-scrollbar-thumb:hover {
+    filter: brightness(0.95);
+  }
+
+  .dark .scrollbar-kit::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.08);
+  }
+
+  .scrollbar-kit::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /**
+   * Menus, modals, listboxes: thin bar; thumb visible on hover or while scrolling
+   * (directive adds ess-scrollbar--scrolling during scroll).
+   */
+  .ess-scrollbar {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .ess-scrollbar:hover,
+  .ess-scrollbar.ess-scrollbar--scrolling {
+    scrollbar-color: var(--scrollbar-kit-thumb) var(--scrollbar-kit-track);
+  }
+
+  .ess-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .ess-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 9999px;
+  }
+
+  .ess-scrollbar::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .ess-scrollbar:hover::-webkit-scrollbar-track,
+  .ess-scrollbar.ess-scrollbar--scrolling::-webkit-scrollbar-track {
+    background: var(--scrollbar-kit-track);
+    border: 1px solid var(--scrollbar-kit-border);
+  }
+
+  .ess-scrollbar:hover::-webkit-scrollbar-thumb,
+  .ess-scrollbar.ess-scrollbar--scrolling::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-kit-thumb);
+    border-color: var(--scrollbar-kit-thumb-border);
+  }
+
+  .ess-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+@media print {
+  aside {
+    display: none !important;
+  }
+
+  main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .payslip-scroll-x {
+    overflow: visible !important;
+  }
+
+  .payslip-zoom-viewport {
+    overflow: visible !important;
+  }
+}

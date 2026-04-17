@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ben-1",
+    "name": "Health insurance",
+    "provider": "BlueCare",
+    "tier": "Family",
+    "enrolled": true,
+    "renewal": "2026-01-01",
+    "description": "Medical, dental, and vision coverage."
+  },
+  {
+    "id": "ben-2",
+    "name": "Retirement 401(k)",
+    "provider": "Velumen Retirement (demo)",
+    "tier": "6% match",
+    "enrolled": true,
+    "renewal": null,
+    "description": "Pre-tax contributions with employer match up to 6%."
+  },
+  {
+    "id": "ben-3",
+    "name": "Life insurance",
+    "provider": "SecureLife",
+    "tier": "2x salary",
+    "enrolled": false,
+    "renewal": null,
+    "description": "Optional supplemental life coverage."
+  },
+  {
+    "id": "ben-4",
+    "name": "Gym membership",
+    "provider": "FitPass",
+    "tier": "Standard",
+    "enrolled": false,
+    "renewal": null,
+    "description": "Monthly wellness stipend for eligible gyms."
+  }
+]

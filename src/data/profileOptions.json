@@ -1,0 +1,38 @@
+{
+  "roles": [
+    "Product Manager",
+    "Senior Developer",
+    "Engineering Manager",
+    "QA Analyst",
+    "HR Business Partner",
+    "Design Lead",
+    "People Operations",
+    "Finance Analyst"
+  ],
+  "departments": [
+    "Product",
+    "Engineering",
+    "Design",
+    "People & Culture",
+    "Finance",
+    "Operations",
+    "Customer Success"
+  ],
+  "locationsFallback": [
+    "Brooklyn, NY",
+    "Remote — US East",
+    "Remote — EU",
+    "San Francisco, CA",
+    "London, UK",
+    "Dubai, AE",
+    "Singapore"
+  ],
+  "managers": [
+    "Jane Smith",
+    "Jordan Lee",
+    "Morgan Chen",
+    "Riley Brooks",
+    "Alex Rivera",
+    "Sam Patel"
+  ]
+}

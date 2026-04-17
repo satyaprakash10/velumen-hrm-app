@@ -1,0 +1,23 @@
+[
+  {
+    "id": "n1",
+    "title": "New payslip available",
+    "body": "Your April 2025 payslip is ready to view.",
+    "read": false,
+    "time": "2025-05-01T10:00:00.000Z"
+  },
+  {
+    "id": "n2",
+    "title": "Leave request update",
+    "body": "Your request for Aug 18–22 is pending manager approval.",
+    "read": false,
+    "time": "2025-04-28T14:30:00.000Z"
+  },
+  {
+    "id": "n3",
+    "title": "HR policy reminder",
+    "body": "Annual leave should be booked at least 2 weeks in advance.",
+    "read": true,
+    "time": "2025-04-10T09:00:00.000Z"
+  }
+]

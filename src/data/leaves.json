@@ -1,0 +1,29 @@
+[
+  {
+    "id": "lv-001",
+    "type": "Annual leave",
+    "startDate": "2025-06-09",
+    "endDate": "2025-06-13",
+    "days": 5,
+    "status": "Approved",
+    "reason": "Summer holiday"
+  },
+  {
+    "id": "lv-002",
+    "type": "Sick leave",
+    "startDate": "2025-04-02",
+    "endDate": "2025-04-03",
+    "days": 2,
+    "status": "Approved",
+    "reason": "Medical appointment"
+  },
+  {
+    "id": "lv-003",
+    "type": "Annual leave",
+    "startDate": "2025-08-18",
+    "endDate": "2025-08-22",
+    "days": 5,
+    "status": "Pending",
+    "reason": "Family trip"
+  }
+]

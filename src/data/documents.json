@@ -1,0 +1,34 @@
+[
+  {
+    "id": "doc-1",
+    "name": "Employment contract 2025.pdf",
+    "category": "HR",
+    "updatedAt": "2025-01-10T12:00:00.000Z",
+    "sizeKb": 420,
+    "confidential": true
+  },
+  {
+    "id": "doc-2",
+    "name": "Code of conduct.pdf",
+    "category": "Policy",
+    "updatedAt": "2024-06-01T09:00:00.000Z",
+    "sizeKb": 180,
+    "confidential": false
+  },
+  {
+    "id": "doc-3",
+    "name": "Remote work policy.pdf",
+    "category": "Policy",
+    "updatedAt": "2025-03-15T14:30:00.000Z",
+    "sizeKb": 95,
+    "confidential": false
+  },
+  {
+    "id": "doc-4",
+    "name": "Performance review - Q1 2025.pdf",
+    "category": "Performance",
+    "updatedAt": "2025-04-01T11:00:00.000Z",
+    "sizeKb": 256,
+    "confidential": true
+  }
+]

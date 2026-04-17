@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "id": "tk-1",
+      "title": "Review payroll export",
+      "column": "pending",
+      "projectId": "pr-1",
+      "description": "Verify totals and employee IDs before month-end.",
+      "tags": ["backend", "urgent"],
+      "comments": []
+    },
+    {
+      "id": "tk-2",
+      "title": "Velumen timer UX polish",
+      "column": "in_progress",
+      "projectId": "pr-1",
+      "description": "Pause from minimized state, validation on start.",
+      "tags": ["frontend", "feature"],
+      "comments": [
+        {
+          "id": "c1",
+          "text": "Add pause from minimized state.",
+          "at": "2026-04-14T10:00:00.000Z",
+          "author": "You"
+        }
+      ]
+    },
+    {
+      "id": "tk-3",
+      "title": "Sprint planning deck",
+      "column": "done",
+      "projectId": "pr-2",
+      "description": "",
+      "tags": ["docs"],
+      "comments": []
+    },
+    {
+      "id": "tk-4",
+      "title": "Kanban drag offset on Safari",
+      "column": "bugs",
+      "projectId": "pr-1",
+      "description": "Card ghost image clips when column is scrolled.",
+      "tags": ["bugfix", "frontend"],
+      "comments": []
+    }
+  ]
+}

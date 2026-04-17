@@ -1,0 +1,5 @@
+[
+  { "id": "pr-1", "name": "Velumen Portal", "code": "VEL", "description": "Employee workspace product work" },
+  { "id": "pr-2", "name": "Meetings", "code": "MTG", "description": "Internal meetings and ceremonies" },
+  { "id": "pr-3", "name": "Leave & HR", "code": "HR", "description": "HR operations and leave policies" }
+]

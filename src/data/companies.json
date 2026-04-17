@@ -1,0 +1,14 @@
+[
+  {
+    "id": "co-1",
+    "name": "Acme Robotics Ltd",
+    "shortName": "Acme",
+    "region": "US-East"
+  },
+  {
+    "id": "co-2",
+    "name": "Northwind Labs",
+    "shortName": "Northwind",
+    "region": "EU-West"
+  }
+]

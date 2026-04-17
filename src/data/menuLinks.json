@@ -1,0 +1,13 @@
+[
+  { "ordinal": 1, "icon": "dashboard", "title": "dashboard", "path": "dashboard", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 2, "icon": "employees", "title": "my_information", "path": "my-information", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 3, "icon": "launchpad", "title": "my_payslips", "path": "my-payslips", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 4, "icon": "briefcase", "title": "projects", "path": "projects", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 5, "icon": "kanban", "title": "task_board", "path": "task-board", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 6, "icon": "time-entry", "title": "time_entry", "path": "timesheet", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 7, "icon": "leaves", "title": "leaves", "path": "leaves", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 8, "icon": "benefits", "title": "benefits", "path": "benefits", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 9, "icon": "documents", "title": "documents", "path": "docs", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 10, "icon": "organizational-chart", "title": "organizational_chart", "path": "orgchart", "enabled": true, "allowedRoles": ["admin", "employee"] },
+  { "ordinal": 11, "icon": "my-team", "title": "my_team", "path": "my-team", "enabled": true, "allowedRoles": ["admin", "employee"] }
+]

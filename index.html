@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/logo-mark.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f0f2f5" />
+    <meta
+      name="description"
+      content="Velumen — employee workspace for payslips, time tracking, leave, benefits, and documents. One secure hub for your team."
+    />
+    <meta
+      name="keywords"
+      content="employee self service, HR portal, payslips, time tracking, leave management, workforce"
+    />
+    <meta name="author" content="Velumen" />
+    <meta name="robots" content="index, follow" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Velumen" />
+    <meta property="og:title" content="Velumen — Employee Workspace" />
+    <meta
+      property="og:description"
+      content="Access payslips, time entry, leave, benefits, and team tools in one responsive employee hub."
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Velumen — Employee Workspace" />
+    <meta
+      name="twitter:description"
+      content="Payslips, time, leave, and benefits in one place. Built for clarity and speed."
+    />
+    <script>
+      (function () {
+        try {
+          var k = "ess_dark_mode";
+          var s = localStorage.getItem(k);
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var d;
+          if (s === "1") d = true;
+          else if (s === "0") d = false;
+          else d = prefersDark;
+          var el = document.documentElement;
+          el.classList.toggle("dark", !!d);
+          el.style.colorScheme = d ? "dark" : "light";
+          el.setAttribute("data-theme", d ? "dark" : "light");
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute("content", d ? "#020617" : "#f0f2f5");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Velumen — Employee Workspace</title>
+  </head>
+  <body class="antialiased">
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

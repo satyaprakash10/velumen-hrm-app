@@ -1,0 +1,11 @@
+{
+  "weekOf": "2025-04-14",
+  "expectedHours": 40,
+  "entries": [
+    { "date": "2025-04-14", "hours": 8, "project": "Velumen Portal", "notes": "Feature work" },
+    { "date": "2025-04-15", "hours": 8, "project": "Velumen Portal", "notes": "" },
+    { "date": "2025-04-16", "hours": 7.5, "project": "Meetings", "notes": "Sprint planning" },
+    { "date": "2025-04-17", "hours": 8, "project": "Velumen Portal", "notes": "" },
+    { "date": "2025-04-18", "hours": 4, "project": "Leave", "notes": "Half day" }
+  ]
+}

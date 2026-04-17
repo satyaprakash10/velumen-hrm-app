@@ -1,0 +1,15 @@
+{
+  "employeeId": "TF2019",
+  "firstName": "Ted",
+  "lastName": "Ferguson",
+  "preferredName": "Ted",
+  "email": "ted.ferguson@example.com",
+  "countryCode": "US",
+  "phone": "+17185550142",
+  "role": "Product Manager",
+  "department": "Product",
+  "location": "Brooklyn, NY",
+  "manager": "Jane Smith",
+  "hireDate": "2019-01-15",
+  "avatarUrl": null
+}

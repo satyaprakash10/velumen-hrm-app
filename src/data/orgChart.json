@@ -1,0 +1,47 @@
+{
+  "root": {
+    "id": "n-ceo",
+    "name": "Alex Rivera",
+    "title": "CEO",
+    "email": "alex.rivera@example.com",
+    "children": [
+      {
+        "id": "n-cpo",
+        "name": "Jordan Lee",
+        "title": "Chief Product Officer",
+        "email": "jordan.lee@example.com",
+        "children": [
+          {
+            "id": "n-pm",
+            "name": "Ted Ferguson",
+            "title": "Product Manager",
+            "email": "ted.ferguson@example.com",
+            "children": []
+          },
+          {
+            "id": "n-design",
+            "name": "Sam Patel",
+            "title": "Design Lead",
+            "email": "sam.patel@example.com",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "n-chro",
+        "name": "Morgan Chen",
+        "title": "Chief HR Officer",
+        "email": "morgan.chen@example.com",
+        "children": [
+          {
+            "id": "n-hrbp",
+            "name": "Riley Brooks",
+            "title": "HR Business Partner",
+            "email": "riley.brooks@example.com",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

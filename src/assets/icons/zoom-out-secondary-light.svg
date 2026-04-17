@@ -1,0 +1,17 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="32" height="32" rx="12" fill="#E3E6EC"/>
+<g clip-path="url(#zout-a)">
+<g clip-path="url(#zout-b)">
+<path d="M18.5 15.5H13.5C13.22 15.5 13 15.72 13 16C13 16.28 13.22 16.5 13.5 16.5H18.5C18.78 16.5 19 16.28 19 16C19 15.72 18.78 15.5 18.5 15.5Z" fill="#001738"/>
+<path d="M16 9C12.14 9 9 12.14 9 16C9 19.86 12.14 23 16 23C19.86 23 23 19.86 23 16C23 12.14 19.86 9 16 9ZM16 22C12.69 22 10 19.31 10 16C10 12.69 12.69 10 16 10C19.31 10 22 12.69 22 16C22 19.31 19.31 22 16 22Z" fill="#001738"/>
+</g>
+</g>
+<defs>
+<clipPath id="zout-a">
+<rect width="14" height="14" fill="white" transform="translate(9 9)"/>
+</clipPath>
+<clipPath id="zout-b">
+<rect width="14" height="14" fill="white" transform="translate(9 9)"/>
+</clipPath>
+</defs>
+</svg>

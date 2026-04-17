@@ -1,0 +1,34 @@
+[
+  {
+    "id": "tm-1",
+    "name": "Jane Smith",
+    "role": "Engineering Manager",
+    "email": "jane.smith@example.com",
+    "location": "Brooklyn, NY",
+    "reportsTo": "Jordan Lee"
+  },
+  {
+    "id": "tm-2",
+    "name": "Chris Wong",
+    "role": "Senior Developer",
+    "email": "chris.wong@example.com",
+    "location": "Remote — US East",
+    "reportsTo": "Jane Smith"
+  },
+  {
+    "id": "tm-3",
+    "name": "Priya Nair",
+    "role": "QA Analyst",
+    "email": "priya.nair@example.com",
+    "location": "Brooklyn, NY",
+    "reportsTo": "Jane Smith"
+  },
+  {
+    "id": "tm-4",
+    "name": "Diego Alvarez",
+    "role": "Product Designer",
+    "email": "diego.alvarez@example.com",
+    "location": "Remote — EU",
+    "reportsTo": "Sam Patel"
+  }
+]

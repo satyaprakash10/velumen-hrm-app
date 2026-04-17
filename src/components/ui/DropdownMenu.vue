@@ -32,13 +32,18 @@
           ref="popoverRef"
           v-ess-scrollbar
           :style="popoverStyle"
-          class="max-h-[min(320px,70vh)] min-w-[192px] overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl ring-1 ring-black/5 dark:border-slate-600 dark:bg-slate-900 dark:ring-white/10"
+          class="max-h-[min(480px,calc(100dvh-4rem))] min-w-[192px] overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl ring-1 ring-black/5 dark:border-slate-600 dark:bg-slate-900 dark:ring-white/10"
           role="menu"
           :aria-label="ariaLabel"
         >
-          <li v-for="(item, i) in items" :key="i" role="none" class="py-0.5">
+          <li v-for="(item, i) in items" :key="i" role="none" :class="item.divider ? 'list-none py-1' : 'py-0.5'">
+            <hr
+              v-if="item.divider"
+              class="my-0.5 border-t border-slate-200 dark:border-slate-600"
+              role="separator"
+            />
             <button
-              v-if="item.action"
+              v-else-if="item.action"
               type="button"
               role="menuitem"
               class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors duration-150"

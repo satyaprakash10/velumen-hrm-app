@@ -823,6 +823,7 @@ function cardMenuItems(t) {
         if (row) toast.success("Task cloned.", { module: "tasks", action: "clone" });
       },
     },
+    { divider: true },
     {
       label: "Delete",
       danger: true,

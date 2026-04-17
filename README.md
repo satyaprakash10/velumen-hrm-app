@@ -3,7 +3,7 @@
 A Vue 3 employee self-service demo: payslips, timesheet, task board, org chart, and a floating time tracker. Layout and navigation are built for desktop and mobile; task cards and the timer use pointer-based dragging so moving items on a phone or tablet feels natural.
 
 
-### Production Live URL: https://resonant-cassata-2134ff.netlify.app/login?redirect=/dashboard
+### Production Live URL: https://resonant-cassata-2134ff.netlify.app/login?redirect=/
 
 
 ## What you need

@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
 import { hashPassword, timingSafeEqualHex } from "@/utils/authCrypto.js";
 import { AUTH, isValidEmailFormat } from "@/utils/authValidation.js";
+import { emitAuthActivity } from "@/utils/activityBus.js";
 
 const TOKEN_KEY = "ess_auth_user";
 const REGISTRY_KEY = "ess_user_registry_v1";
@@ -177,6 +178,12 @@ export function useAuth() {
       throw err;
     }
     if (isLocked(em)) {
+      emitAuthActivity({
+        title: "Sign-in blocked",
+        message: `Account ${em} is temporarily locked after repeated failures.`,
+        severity: "error",
+        context: { email: em, event: "locked" },
+      });
       const err = new Error("Too many attempts. Try again in a couple of minutes.");
       err.code = "LOCKED";
       throw err;
@@ -187,6 +194,12 @@ export function useAuth() {
     const found = pool.find((x) => String(x.email).trim().toLowerCase() === em);
     if (!found || !timingSafeEqualHex(found.passwordHash, hash)) {
       registerFailure(em);
+      emitAuthActivity({
+        title: "Failed sign-in attempt",
+        message: `Invalid credentials for ${em}.`,
+        severity: "warning",
+        context: { email: em, event: "login_failed" },
+      });
       const err = new Error("Invalid email or password.");
       err.code = "AUTH";
       throw err;
@@ -195,6 +208,14 @@ export function useAuth() {
     clearFailures(em);
     const { passwordHash: _h, ...safe } = found;
     persist(safe);
+    const firstName = String(safe.name || "").trim().split(/\s+/)[0] || "there";
+    emitAuthActivity({
+      title: "Signed in",
+      message: `Welcome back, ${firstName} 👋`,
+      body: `Signed in as ${safe.email}.`,
+      severity: "success",
+      context: { email: safe.email, role: safe.role, event: "login" },
+    });
     return safe;
   }
 
@@ -241,6 +262,14 @@ export function useAuth() {
     saveRegistry();
     const { passwordHash: _ph, ...safe } = row;
     persist(safe);
+    const firstName = String(safe.name || "").trim().split(/\s+/)[0] || "there";
+    emitAuthActivity({
+      title: "Account created",
+      message: `Welcome aboard, ${firstName} 🎉`,
+      body: `Your ${safe.role} workspace is ready to go.`,
+      severity: "success",
+      context: { email: safe.email, role: safe.role, event: "register" },
+    });
     return safe;
   }
 
@@ -259,7 +288,18 @@ export function useAuth() {
   }
 
   function logout() {
+    const previous = user.value;
     persist(null);
+    if (previous) {
+      const firstName = String(previous.name || "").trim().split(/\s+/)[0];
+      emitAuthActivity({
+        title: "Signed out",
+        message: firstName ? `See you soon, ${firstName} 👋` : "Session ended.",
+        body: "Your session has ended on this device.",
+        severity: "info",
+        context: { email: previous.email, event: "logout" },
+      });
+    }
   }
 
   function roleForCompany(companyId) {

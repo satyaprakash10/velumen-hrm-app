@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <ModalPanel v-model="detailOpen">
+    <ModalPanel v-model="detailOpen" :icon="TEAM_MODAL_ICON">
       <template #title>{{ active?.name }}</template>
       <template v-if="active" #badges>
         <StatusBadge class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</StatusBadge>
@@ -64,12 +64,22 @@
       <template v-if="active" #actions>
         <DropdownMenu aria-label="Teammate profile actions" :items="teamDetailModalMenu(active)" />
       </template>
-      <dl v-if="active" class="space-y-3">
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Email</dt><dd class="mt-0.5"><a :href="`mailto:${active.email}`" class="font-medium text-sky-600 underline dark:text-sky-400">{{ active.email }}</a></dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Role</dt><dd class="mt-0.5">{{ active.role }}</dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Location</dt><dd class="mt-0.5">{{ active.location }}</dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Reports to</dt><dd class="mt-0.5">{{ active.reportsTo }}</dd></div>
-      </dl>
+      <div v-if="active" class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <ModalFact label="Role" :value="active.role" icon="briefcase" tone="indigo" />
+        <ModalFact label="Location" :value="active.location" icon="map" tone="amber" />
+        <ModalFact
+          label="Email"
+          :value="active.email"
+          icon="mail"
+          tone="sky"
+        >
+          <a
+            :href="`mailto:${active.email}`"
+            class="font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
+          >{{ active.email }}</a>
+        </ModalFact>
+        <ModalFact label="Reports to" :value="active.reportsTo" icon="user" tone="violet" />
+      </div>
     </ModalPanel>
   </div>
 </template>
@@ -82,6 +92,16 @@ import { inputFieldClass } from "@/utils/formFieldClasses.js";
 import DropdownMenu from "@/components/ui/DropdownMenu.vue";
 import StatusBadge from "@/components/ui/StatusBadge.vue";
 import ModalPanel from "@/components/ui/ModalPanel.vue";
+import ModalFact from "@/components/shared/ModalFact.vue";
+import { usePageActivity } from "@/composables/usePageActivity.js";
+
+const TEAM_MODAL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="h-full w-full"><circle cx="12" cy="8" r="3.6"/><path stroke-linecap="round" d="M4 20c1.2-3.4 4-5 8-5s6.8 1.6 8 5"/></svg>`;
+
+usePageActivity({
+  title: "My team opened",
+  module: "my-team",
+  to: "/my-team",
+});
 
 const members = ref(seed.map((m) => ({ ...m })));
 const query = ref("");

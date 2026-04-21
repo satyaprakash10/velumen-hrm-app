@@ -32,13 +32,30 @@ import { ref, provide } from "vue";
 import tree from "@/data/orgChart.json";
 import OrgChartNode from "@/components/org/OrgChartNode.vue";
 import { useToast } from "@/composables/useToast.js";
+import { emitActivity } from "@/utils/activityBus.js";
+import { usePageActivity } from "@/composables/usePageActivity.js";
 
 const toast = useToast();
 const orgExpandTick = ref(0);
 provide("orgExpandTick", orgExpandTick);
 
+usePageActivity({
+  title: "Org chart opened",
+  module: "orgchart",
+  to: "/orgchart",
+});
+
 function expandAll() {
   orgExpandTick.value += 1;
   toast.success("All visible branches expanded.", { module: "orgchart" });
+  emitActivity({
+    title: "Org chart expanded",
+    message: "All visible branches expanded.",
+    module: "orgchart",
+    severity: "info",
+    toast: false,
+    silent: true,
+    context: { event: "orgchart_expand_all" },
+  });
 }
 </script>

@@ -30,6 +30,16 @@ function normalizeTask(raw) {
   if (!Array.isArray(t.comments)) t.comments = [];
   if (!Array.isArray(t.tags)) t.tags = [];
   if (typeof t.description !== "string") t.description = "";
+  if (!Array.isArray(t.attachments)) t.attachments = [];
+  if (!Array.isArray(t.subtasks)) t.subtasks = [];
+  t.subtasks = t.subtasks
+    .map((s, idx) => ({
+      id: s.id || `st-${Date.now().toString(36)}-${idx}`,
+      title: String(s.title || "").slice(0, 200),
+      done: Boolean(s.done),
+      createdAt: s.createdAt || new Date().toISOString(),
+    }))
+    .filter((s) => s.title.trim().length > 0);
   return t;
 }
 
@@ -116,9 +126,22 @@ export function useTaskBoard() {
       description: String(payload.description || "").trim(),
       tags: Array.isArray(payload.tags) ? payload.tags.filter(Boolean) : [],
       comments: [],
+      attachments: Array.isArray(payload.attachments)
+        ? payload.attachments.filter(Boolean)
+        : [],
+      subtasks: Array.isArray(payload.subtasks)
+        ? payload.subtasks.filter(Boolean)
+        : [],
     });
     tasks.value = [...tasks.value, row];
-    emitActivity({ title: "Task created", message: title, module: "tasks" });
+    emitActivity({
+      title: "Task created",
+      message: title,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "task_create", taskId: row.id },
+    });
     return row;
   }
 
@@ -131,8 +154,126 @@ export function useTaskBoard() {
     if (patch.tags != null) next.tags = Array.isArray(patch.tags) ? patch.tags.filter(Boolean) : [];
     if (patch.column != null && COLUMN_IDS.has(patch.column)) next.column = patch.column;
     if (patch.projectId != null) next.projectId = patch.projectId;
-    tasks.value = tasks.value.map((t) => (t.id === id ? next : t));
-    emitActivity({ title: "Task updated", message: next.title, module: "tasks" });
+    if (patch.attachments != null) {
+      next.attachments = Array.isArray(patch.attachments)
+        ? patch.attachments.filter(Boolean)
+        : [];
+    }
+    if (patch.subtasks != null) {
+      next.subtasks = Array.isArray(patch.subtasks)
+        ? patch.subtasks.filter(Boolean)
+        : [];
+    }
+    tasks.value = tasks.value.map((t) =>
+      t.id === id ? normalizeTask(next) : t,
+    );
+    emitActivity({
+      title: "Task updated",
+      message: next.title,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "task_update", taskId: id },
+    });
+    return true;
+  }
+
+  /* ------------------------------------------------------------------- *
+   *  Subtasks
+   * ------------------------------------------------------------------- */
+
+  function addSubtask(taskId, title) {
+    const t = tasks.value.find((x) => x.id === taskId);
+    if (!t) return null;
+    const trimmed = String(title || "").trim();
+    if (!trimmed) return null;
+    const sub = {
+      id: `st-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+      title: trimmed,
+      done: false,
+      createdAt: new Date().toISOString(),
+    };
+    t.subtasks = [...(t.subtasks || []), sub];
+    tasks.value = tasks.value.map((x) => (x.id === taskId ? { ...t } : x));
+    emitActivity({
+      title: "Subtask added",
+      message: `${t.title} · ${trimmed}`,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "subtask_add", taskId, subtaskId: sub.id },
+    });
+    return sub;
+  }
+
+  function updateSubtask(taskId, subId, patch) {
+    const t = tasks.value.find((x) => x.id === taskId);
+    if (!t) return false;
+    const list = t.subtasks || [];
+    const i = list.findIndex((s) => s.id === subId);
+    if (i < 0) return false;
+    const next = { ...list[i], ...patch };
+    if (patch.title != null) next.title = String(patch.title).slice(0, 200).trim();
+    if (patch.done != null) next.done = Boolean(patch.done);
+    if (!next.title) return false;
+    t.subtasks = list.map((s) => (s.id === subId ? next : s));
+    tasks.value = tasks.value.map((x) => (x.id === taskId ? { ...t } : x));
+    emitActivity({
+      title: patch.done != null ? (next.done ? "Subtask completed" : "Subtask reopened") : "Subtask updated",
+      message: `${t.title} · ${next.title}`,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      severity: patch.done === true ? "success" : "info",
+      context: { event: "subtask_update", taskId, subtaskId: subId },
+    });
+    return true;
+  }
+
+  function removeSubtask(taskId, subId) {
+    const t = tasks.value.find((x) => x.id === taskId);
+    if (!t) return false;
+    const target = (t.subtasks || []).find((s) => s.id === subId);
+    if (!target) return false;
+    t.subtasks = (t.subtasks || []).filter((s) => s.id !== subId);
+    tasks.value = tasks.value.map((x) => (x.id === taskId ? { ...t } : x));
+    emitActivity({
+      title: "Subtask removed",
+      message: `${t.title} · ${target.title}`,
+      module: "tasks",
+      severity: "warning",
+      toast: false,
+      silent: true,
+      context: { event: "subtask_delete", taskId, subtaskId: subId },
+    });
+    return true;
+  }
+
+  function reorderSubtasks(taskId, fromIndex, toIndex) {
+    const t = tasks.value.find((x) => x.id === taskId);
+    if (!t) return false;
+    const list = [...(t.subtasks || [])];
+    if (
+      fromIndex < 0 ||
+      toIndex < 0 ||
+      fromIndex >= list.length ||
+      toIndex >= list.length ||
+      fromIndex === toIndex
+    ) {
+      return false;
+    }
+    const [moved] = list.splice(fromIndex, 1);
+    list.splice(toIndex, 0, moved);
+    t.subtasks = list;
+    tasks.value = tasks.value.map((x) => (x.id === taskId ? { ...t } : x));
+    emitActivity({
+      title: "Subtasks reordered",
+      message: t.title,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "subtask_reorder", taskId },
+    });
     return true;
   }
 
@@ -146,6 +287,9 @@ export function useTaskBoard() {
       title: "Task moved",
       message: `${t.title} → ${COLUMNS.find((c) => c.id === column)?.title || column}`,
       module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "task_move", taskId: id },
     });
   }
 
@@ -165,6 +309,9 @@ export function useTaskBoard() {
       title: "Comment added",
       message: t.title,
       module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "comment", taskId },
     });
   }
 
@@ -183,9 +330,25 @@ export function useTaskBoard() {
       description: t.description || "",
       tags: [...(t.tags || [])],
       comments: [],
+      attachments: (t.attachments || []).map((a) => ({
+        ...a,
+        id: `att-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      })),
+      subtasks: (t.subtasks || []).map((s) => ({
+        ...s,
+        id: `st-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+        done: false,
+      })),
     });
     tasks.value = [...tasks.value, row];
-    emitActivity({ title: "Task cloned", message: row.title, module: "tasks" });
+    emitActivity({
+      title: "Task cloned",
+      message: row.title,
+      module: "tasks",
+      toast: false,
+      silent: true,
+      context: { event: "task_clone", taskId: row.id },
+    });
     return row;
   }
 
@@ -200,5 +363,9 @@ export function useTaskBoard() {
     addComment,
     removeTask,
     cloneTask,
+    addSubtask,
+    updateSubtask,
+    removeSubtask,
+    reorderSubtasks,
   };
 }

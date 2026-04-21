@@ -8,8 +8,8 @@
     <button
       ref="btnRef"
       type="button"
-      class="dropdown-trigger flex h-9 w-9 items-center justify-center rounded-lg border text-slate-600 shadow-sm transition-[color,background-color,border-color,transform] duration-200 hover:text-[#001738] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40 active:scale-[0.97] dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white"
-      :class="open ? 'border-slate-300 bg-slate-100 dark:border-slate-500 dark:bg-slate-700' : 'border-slate-200 bg-white dark:border-slate-600'"
+      class="dropdown-trigger flex h-9 w-9 items-center justify-center rounded-lg border border-transparent bg-transparent text-slate-500 transition-colors duration-200 hover:bg-slate-100 hover:text-[#001738] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40 active:scale-[0.97] dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+      :class="open ? 'bg-slate-100 text-[#001738] dark:bg-slate-800 dark:text-white' : ''"
       :aria-expanded="open"
       aria-haspopup="true"
       :aria-label="ariaLabel"
@@ -32,21 +32,21 @@
           ref="popoverRef"
           v-ess-scrollbar
           :style="popoverStyle"
-          class="max-h-[min(480px,calc(100dvh-4rem))] min-w-[192px] overflow-y-auto rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl ring-1 ring-black/5 dark:border-slate-600 dark:bg-slate-900 dark:ring-white/10"
+          class="max-h-[min(440px,calc(100dvh-4rem))] min-w-[176px] overflow-y-auto rounded-lg border border-slate-200 bg-white p-1 shadow-lg ring-1 ring-black/5 dark:border-slate-700 dark:bg-slate-900 dark:ring-white/10"
           role="menu"
           :aria-label="ariaLabel"
         >
-          <li v-for="(item, i) in items" :key="i" role="none" :class="item.divider ? 'list-none py-1' : 'py-0.5'">
+          <li v-for="(item, i) in items" :key="i" role="none">
             <hr
               v-if="item.divider"
-              class="my-0.5 border-t border-slate-200 dark:border-slate-600"
+              class="my-1 border-t border-slate-200 dark:border-slate-700"
               role="separator"
             />
             <button
               v-else-if="item.action"
               type="button"
               role="menuitem"
-              class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors duration-150"
+              class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[12px] font-medium transition-colors duration-150"
               :class="
                 item.danger
                   ? 'text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50'
@@ -56,25 +56,25 @@
             >
               <span
                 v-if="iconHtml(item)"
-                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 [&>svg]:shrink-0"
-                :class="item.danger ? 'bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400' : ''"
+                class="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-slate-500 dark:text-slate-400 [&>svg]:h-full [&>svg]:w-full"
+                :class="item.danger ? 'text-red-500 dark:text-red-400' : ''"
                 v-html="iconHtml(item)"
               />
-              <span class="min-w-0 flex-1">{{ item.label }}</span>
+              <span class="min-w-0 flex-1 truncate">{{ item.label }}</span>
             </button>
             <a
               v-else-if="item.href"
               :href="item.href"
               role="menuitem"
-              class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-800 transition-colors duration-150 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+              class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[12px] font-medium text-slate-800 transition-colors duration-150 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
               @click="close"
             >
               <span
                 v-if="iconHtml(item)"
-                class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 [&>svg]:shrink-0"
+                class="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-slate-500 dark:text-slate-400 [&>svg]:h-full [&>svg]:w-full"
                 v-html="iconHtml(item)"
               />
-              <span class="min-w-0 flex-1">{{ item.label }}</span>
+              <span class="min-w-0 flex-1 truncate">{{ item.label }}</span>
             </a>
           </li>
         </ul>

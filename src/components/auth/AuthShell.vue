@@ -9,8 +9,12 @@
       class="relative hidden w-[min(52%,640px)] shrink-0 flex-col justify-between border-r border-white/10 bg-gradient-to-b from-slate-900/95 to-slate-950 p-10 lg:flex xl:p-14"
     >
       <div>
-        <RouterLink to="/login" class="inline-flex items-center gap-3">
-          <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white/10 shadow-lg ring-1 ring-white/20">
+        <RouterLink
+          to="/welcome"
+          class="group inline-flex items-center gap-3 rounded-2xl p-1 transition hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40"
+          :aria-label="`${brandName} — go to landing`"
+        >
+          <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white/10 shadow-lg ring-1 ring-white/20 transition group-hover:scale-[1.03]">
             <img src="/logo-mark.svg" :alt="brandName" class="h-9 w-9 object-contain" width="36" height="36" />
           </span>
           <span class="text-lg font-bold tracking-tight text-white">{{ brandTitle }}</span>
@@ -58,8 +62,31 @@
       <p class="mt-12 text-xs text-slate-500">Illustrative UI previews — not live data.</p>
     </aside>
 
-    <main class="relative flex min-w-0 flex-1 flex-col items-center justify-center px-4 py-12 sm:px-8">
-      <div class="w-full max-w-[420px]">
+    <main class="relative flex min-w-0 flex-1 flex-col items-stretch px-4 py-6 sm:px-8 sm:py-8 lg:items-center lg:justify-center lg:py-12">
+      <!--
+        Mobile / tablet-only brand row. Keeps the Velumen identity visible
+        below the `lg` breakpoint where the left aside is hidden, and gives
+        users a direct tap-target back to the landing page while signed out.
+      -->
+      <header class="mb-6 flex items-center justify-center lg:hidden">
+        <RouterLink
+          to="/welcome"
+          class="group inline-flex items-center gap-2.5 rounded-2xl px-2 py-1 transition hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40"
+          :aria-label="`${brandName} — go to landing`"
+        >
+          <span class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-white/10 shadow-lg ring-1 ring-white/20 transition group-hover:scale-[1.04]">
+            <img src="/logo-mark.svg" :alt="brandName" class="h-6 w-6 object-contain" width="24" height="24" />
+          </span>
+          <span class="flex min-w-0 flex-col leading-tight">
+            <span class="text-[13px] font-bold tracking-tight text-white">{{ brandName }}</span>
+            <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+              {{ brandTagline }}
+            </span>
+          </span>
+        </RouterLink>
+      </header>
+
+      <div class="mx-auto w-full max-w-[420px] flex-1 lg:flex-none">
         <slot />
       </div>
     </main>
@@ -72,5 +99,6 @@ import { RouterLink } from "vue-router";
 import { BRAND } from "@/config/brand.js";
 
 const brandName = BRAND.name;
+const brandTagline = BRAND.tagline;
 const brandTitle = computed(() => `${BRAND.name} — ${BRAND.tagline}`);
 </script>

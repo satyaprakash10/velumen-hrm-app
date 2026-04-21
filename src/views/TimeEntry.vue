@@ -1,47 +1,94 @@
 <template>
-  <div class="min-h-full bg-page-bg px-4 py-6 dark:bg-slate-950 md:px-10 md:py-8">
+  <div
+    class="min-h-full px-4 py-6 bg-page-bg dark:bg-slate-950 md:px-10 md:py-8"
+  >
     <div class="mx-auto max-w-[1100px]">
-      <h1 class="page-title mb-1">Time entry</h1>
+      <h1 class="mb-1 page-title">Time entry</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400">
         Week of {{ weekOf }} · Expected {{ expectedHours }}h
       </p>
 
-      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Logged</p>
-          <p class="mt-2 text-2xl font-semibold tabular-nums text-gray-900 dark:text-gray-100">
+      <div class="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-3">
+        <div
+          class="p-5 bg-white border shadow-sm rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-900"
+        >
+          <p
+            class="text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500"
+          >
+            Logged
+          </p>
+          <p
+            class="mt-2 text-2xl font-semibold text-gray-900 tabular-nums dark:text-gray-100"
+          >
             {{ weekTotal.toFixed(1) }}h
           </p>
         </div>
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Variance</p>
+        <div
+          class="p-5 bg-white border shadow-sm rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-900"
+        >
+          <p
+            class="text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500"
+          >
+            Variance
+          </p>
           <p
             class="mt-2 text-2xl font-semibold tabular-nums"
-            :class="variance >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'"
+            :class="
+              variance >= 0
+                ? 'text-emerald-700 dark:text-emerald-400'
+                : 'text-amber-700 dark:text-amber-400'
+            "
           >
             {{ variance >= 0 ? "+" : "" }}{{ variance.toFixed(1) }}h
           </p>
         </div>
-        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500">Entries</p>
-          <p class="mt-2 text-2xl font-semibold tabular-nums text-gray-900 dark:text-gray-100">
+        <div
+          class="p-5 bg-white border shadow-sm rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-900"
+        >
+          <p
+            class="text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500"
+          >
+            Entries
+          </p>
+          <p
+            class="mt-2 text-2xl font-semibold text-gray-900 tabular-nums dark:text-gray-100"
+          >
             {{ entries.length }}
           </p>
         </div>
       </div>
 
-      <div class="mt-10 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 class="text-lg font-semibold text-navy dark:text-slate-100">Add entry</h2>
-        <form class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2" @submit.prevent="onSubmit">
+      <div
+        class="p-6 mt-10 bg-white border shadow-sm rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-900"
+      >
+        <h2 class="text-lg font-semibold text-navy dark:text-slate-100">
+          Add entry
+        </h2>
+        <form
+          class="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2"
+          @submit.prevent="onSubmit"
+        >
           <label class="block">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Date</span>
-            <DatePickerField v-model="form.date" class="mt-1.5 block" :invalid="v$.date.$error" />
-            <p v-if="v$.date.$error" class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Date</span
+            >
+            <DatePickerField
+              v-model="form.date"
+              class="mt-1.5 block"
+              :invalid="v$.date.$error"
+            />
+            <p
+              v-if="v$.date.$error"
+              class="mt-1 text-xs text-red-600 dark:text-red-400"
+              role="alert"
+            >
               {{ v$.date.$errors[0]?.$message }}
             </p>
           </label>
           <label class="block">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Hours</span>
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Hours</span
+            >
             <input
               v-model.number="form.hours"
               type="number"
@@ -49,7 +96,11 @@
               step="0.25"
               :class="inputFieldClass(v$.hours.$error)"
             />
-            <p v-if="v$.hours.$error" class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+            <p
+              v-if="v$.hours.$error"
+              class="mt-1 text-xs text-red-600 dark:text-red-400"
+              role="alert"
+            >
               {{ v$.hours.$errors[0]?.$message }}
             </p>
           </label>
@@ -61,12 +112,18 @@
               :input-class="inputFieldClass(v$.project.$error)"
               :extra-names="entryProjectNames"
             />
-            <p v-if="v$.project.$error" class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
+            <p
+              v-if="v$.project.$error"
+              class="mt-1 text-xs text-red-600 dark:text-red-400"
+              role="alert"
+            >
               {{ v$.project.$errors[0]?.$message }}
             </p>
           </div>
           <label class="block md:col-span-2">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Notes</span>
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Notes</span
+            >
             <input
               v-model="form.notes"
               type="text"
@@ -74,39 +131,102 @@
               placeholder="Optional"
             />
           </label>
+          <div class="block md:col-span-2">
+            <span
+              class="pr-4 text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Billing currency</span
+            >
+            <CurrencySelect
+              v-model="form.currency"
+              class="mt-1.5 block"
+              aria-label="Billing currency"
+            />
+          </div>
           <div class="md:col-span-2">
             <button type="submit" :class="btnPrimaryClass">
+              <svg
+                class="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
               Add to timesheet
             </button>
           </div>
         </form>
       </div>
 
-      <div class="mt-10 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 class="border-b border-slate-200 px-6 py-4 text-lg font-semibold text-navy dark:border-slate-800 dark:text-slate-100">
+      <div
+        class="mt-10 overflow-hidden bg-white border shadow-sm rounded-xl border-slate-200 dark:border-slate-800 dark:bg-slate-900"
+      >
+        <h2
+          class="px-6 py-4 text-lg font-semibold border-b border-slate-200 text-navy dark:border-slate-800 dark:text-slate-100"
+        >
           This week
         </h2>
         <div class="overflow-x-auto">
           <table class="min-w-[720px] w-full text-left text-sm">
-            <thead class="border-b border-slate-200 bg-gray-50/80 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-slate-800 dark:bg-slate-800/50 dark:text-gray-400">
+            <thead
+              class="text-xs font-semibold tracking-wide text-gray-500 uppercase border-b border-slate-200 bg-gray-50/80 dark:border-slate-800 dark:bg-slate-800/50 dark:text-gray-400"
+            >
               <tr>
                 <th class="px-6 py-3">Date</th>
                 <th class="px-6 py-3">Hours</th>
                 <th class="px-6 py-3">Project</th>
+                <th class="px-6 py-3">Currency</th>
                 <th class="px-6 py-3">Notes</th>
-                <th class="w-14 px-2 py-3 text-right" aria-label="Actions" />
+                <th class="px-2 py-3 text-right w-14" aria-label="Actions" />
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-              <tr v-for="row in entries" :key="row.id" class="hover:bg-gray-50/80 dark:hover:bg-slate-800/50">
-                <td class="px-6 py-3 tabular-nums text-gray-900 dark:text-gray-100">{{ row.date }}</td>
-                <td class="px-6 py-3 tabular-nums text-gray-700 dark:text-gray-300">{{ row.hours }}</td>
-                <td class="px-6 py-3 text-gray-900 dark:text-gray-100">{{ row.project }}</td>
-                <td class="max-w-xs truncate px-6 py-3 text-gray-600 dark:text-gray-400" :title="row.notes">
+              <tr
+                v-for="row in entries"
+                :key="row.id"
+                class="hover:bg-gray-50/80 dark:hover:bg-slate-800/50"
+              >
+                <td
+                  class="px-6 py-3 text-gray-900 tabular-nums dark:text-gray-100"
+                >
+                  {{ row.date }}
+                </td>
+                <td
+                  class="px-6 py-3 text-gray-700 tabular-nums dark:text-gray-300"
+                >
+                  {{ row.hours }}
+                </td>
+                <td class="px-6 py-3 text-gray-900 dark:text-gray-100">
+                  {{ row.project }}
+                </td>
+                <td class="px-6 py-3">
+                  <span
+                    class="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-semibold ring-1"
+                    :class="currencyByCode(row.currency).chip"
+                  >
+                    <span class="text-[11px] leading-none" aria-hidden="true">{{
+                      currencyByCode(row.currency).symbol
+                    }}</span>
+                    {{ currencyByCode(row.currency).code }}
+                  </span>
+                </td>
+                <td
+                  class="max-w-xs px-6 py-3 text-gray-600 truncate dark:text-gray-400"
+                  :title="row.notes"
+                >
                   {{ row.notes || "—" }}
                 </td>
                 <td class="px-2 py-2 text-right align-middle">
-                  <DropdownMenu aria-label="Time entry actions" :items="menuItemsFor(row)" />
+                  <DropdownMenu
+                    aria-label="Time entry actions"
+                    :items="menuItemsFor(row)"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -114,7 +234,7 @@
         </div>
         <div
           v-if="!entries.length"
-          class="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400"
+          class="px-6 py-12 text-sm text-center text-gray-500 dark:text-gray-400"
           role="status"
         >
           No entries yet.
@@ -125,41 +245,125 @@
     <ModalPanel v-model="viewOpen">
       <template #title>Time entry</template>
       <template v-if="active" #badges>
-        <StatusBadge class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Logged</StatusBadge>
+        <StatusBadge
+          class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200"
+          >Logged</StatusBadge
+        >
       </template>
       <template v-if="active" #actions>
-        <DropdownMenu aria-label="Time entry actions" :items="detailModalMenuFor(active)" />
+        <DropdownMenu
+          aria-label="Time entry actions"
+          :items="detailModalMenuFor(active)"
+        />
       </template>
-      <dl v-if="active" class="space-y-3">
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Date</dt><dd class="mt-0.5 tabular-nums">{{ active.date }}</dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Hours</dt><dd class="mt-0.5">{{ active.hours }}</dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Project</dt><dd class="mt-0.5">{{ active.project }}</dd></div>
-        <div><dt class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Notes</dt><dd class="mt-0.5 whitespace-pre-wrap">{{ active.notes || "—" }}</dd></div>
-      </dl>
+      <div v-if="active" class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <ModalFact
+          label="Date"
+          :value="active.date"
+          icon="calendar"
+          tone="sky"
+        />
+        <ModalFact
+          label="Hours"
+          :value="`${active.hours}h`"
+          icon="clock"
+          tone="indigo"
+        />
+        <ModalFact
+          label="Project"
+          :value="active.project"
+          icon="briefcase"
+          tone="violet"
+        />
+        <ModalFact
+          label="Billing currency"
+          :value="`${currencyByCode(active.currency).symbol} ${currencyByCode(active.currency).code}`"
+          icon="hash"
+          :tone="currencyByCode(active.currency).tone"
+          badge
+        />
+        <div
+          class="p-3 border sm:col-span-2 rounded-xl border-slate-200 bg-slate-50/60 dark:border-slate-800 dark:bg-slate-900/60"
+        >
+          <p
+            class="text-[10.5px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400"
+          >
+            Notes
+          </p>
+          <p
+            class="mt-1 whitespace-pre-wrap text-[13px] leading-relaxed text-slate-700 dark:text-slate-300"
+          >
+            {{ active.notes || "—" }}
+          </p>
+        </div>
+      </div>
     </ModalPanel>
 
     <ModalPanel v-model="editOpen">
       <template #title>Edit entry</template>
       <form v-if="active" class="space-y-4" @submit.prevent="saveEdit">
         <label class="block">
-          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Date</span>
-          <DatePickerField v-model="editForm.date" class="mt-1.5 block" :invalid="ev$.date.$error" />
+          <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+            >Date</span
+          >
+          <DatePickerField
+            v-model="editForm.date"
+            class="mt-1.5 block"
+            :invalid="ev$.date.$error"
+          />
         </label>
         <label class="block">
-          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Hours</span>
-          <input v-model.number="editForm.hours" type="number" min="0" step="0.25" :class="inputFieldClass(ev$.hours.$error)" />
+          <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+            >Hours</span
+          >
+          <input
+            v-model.number="editForm.hours"
+            type="number"
+            min="0"
+            step="0.25"
+            :class="inputFieldClass(ev$.hours.$error)"
+          />
         </label>
         <label class="block">
-          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Project</span>
-          <input v-model="editForm.project" type="text" :class="inputFieldClass(ev$.project.$error)" />
+          <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+            >Project</span
+          >
+          <input
+            v-model="editForm.project"
+            type="text"
+            :class="inputFieldClass(ev$.project.$error)"
+          />
         </label>
         <label class="block">
-          <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Notes</span>
-          <input v-model="editForm.notes" type="text" :class="inputFieldClass(false)" />
+          <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+            >Notes</span
+          >
+          <input
+            v-model="editForm.notes"
+            type="text"
+            :class="inputFieldClass(false)"
+          />
         </label>
+        <div>
+          <span
+            class="pr-4 text-xs font-medium text-gray-600 dark:text-gray-400"
+            >Billing currency</span
+          >
+          <CurrencySelect
+            v-model="editForm.currency"
+            class="mt-1.5 block"
+            aria-label="Billing currency"
+          />
+        </div>
         <div class="flex flex-wrap gap-2 pt-2">
           <button type="submit" :class="btnPrimaryClass">Save</button>
-          <button type="button" :class="btnSecondaryClass" @click="editOpen = false">Cancel</button>
+          <button
+            type="button"
+            :class="btnSecondaryClass"
+            @click="editOpen = false"
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </ModalPanel>
@@ -179,25 +383,36 @@
       </template>
       <div class="space-y-5">
         <div
-          class="rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50/90 to-indigo-50/50 p-4 dark:border-sky-900/50 dark:from-sky-950/40 dark:to-indigo-950/30"
+          class="p-4 border rounded-xl border-sky-100 bg-gradient-to-br from-sky-50/90 to-indigo-50/50 dark:border-sky-900/50 dark:from-sky-950/40 dark:to-indigo-950/30"
         >
-          <p class="text-[11px] font-semibold uppercase tracking-wide text-sky-700/80 dark:text-sky-300/90">
+          <p
+            class="text-[11px] font-semibold uppercase tracking-wide text-sky-700/80 dark:text-sky-300/90"
+          >
             Tracked duration
           </p>
-          <p class="mt-1 text-2xl font-bold tabular-nums text-[#001738] dark:text-slate-100">
+          <p
+            class="mt-1 text-2xl font-bold tabular-nums text-[#001738] dark:text-slate-100"
+          >
             {{ timerHoursDisplay }}h
           </p>
           <p class="mt-1 text-xs text-slate-600 dark:text-slate-400">
             Rounded to the nearest 15 minutes. You can adjust hours below.
           </p>
         </div>
-        <form class="grid grid-cols-1 gap-4 sm:grid-cols-2" @submit.prevent="confirmTimerEntry">
+        <form
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2"
+          @submit.prevent="confirmTimerEntry"
+        >
           <label class="block sm:col-span-2">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Date</span>
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Date</span
+            >
             <DatePickerField v-model="timerDraft.date" class="mt-1.5 block" />
           </label>
           <label class="block">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Hours</span>
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Hours</span
+            >
             <input
               v-model.number="timerDraft.hours"
               type="number"
@@ -217,7 +432,9 @@
             />
           </div>
           <label class="block sm:col-span-2">
-            <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Notes</span>
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Notes</span
+            >
             <input
               v-model="timerDraft.notes"
               type="text"
@@ -225,9 +442,27 @@
               placeholder="Optional"
             />
           </label>
+          <div class="block sm:col-span-2">
+            <span class="text-xs font-medium text-gray-600 dark:text-gray-400"
+              >Billing currency</span
+            >
+            <CurrencySelect
+              v-model="timerDraft.currency"
+              class="mt-1.5 block"
+              aria-label="Billing currency"
+            />
+          </div>
           <div class="flex flex-wrap gap-2 sm:col-span-2">
-            <button type="submit" :class="btnPrimaryClass">Save to timesheet</button>
-            <button type="button" :class="btnSecondaryClass" @click="cancelTimerEntry">Cancel</button>
+            <button type="submit" :class="btnPrimaryClass">
+              Save to timesheet
+            </button>
+            <button
+              type="button"
+              :class="btnSecondaryClass"
+              @click="cancelTimerEntry"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -249,19 +484,39 @@
 import { reactive, ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useVuelidate from "@vuelidate/core";
-import { required, minValue, maxValue, minLength, helpers } from "@vuelidate/validators";
+import {
+  required,
+  minValue,
+  maxValue,
+  minLength,
+  helpers,
+} from "@vuelidate/validators";
 import { useTimeEntry } from "@/composables/useTimeEntry.js";
 import { useTimeTracker } from "@/composables/useTimeTracker.js";
 import { takeTimerEntryPending } from "@/composables/timerEntryBridge.js";
 import { useToast } from "@/composables/useToast.js";
-import { inputFieldClass, btnPrimaryClass, btnSecondaryClass } from "@/utils/formFieldClasses.js";
+import {
+  inputFieldClass,
+  btnPrimaryClass,
+  btnSecondaryClass,
+} from "@/utils/formFieldClasses.js";
 import DatePickerField from "@/components/ui/DatePickerField.vue";
 import DropdownMenu from "@/components/ui/DropdownMenu.vue";
 import StatusBadge from "@/components/ui/StatusBadge.vue";
 import ModalPanel from "@/components/ui/ModalPanel.vue";
 import ConfirmDialog from "@/components/ui/ConfirmDialog.vue";
 import ProjectPickerField from "@/components/ui/ProjectPickerField.vue";
+import CurrencySelect from "@/components/ui/CurrencySelect.vue";
+import ModalFact from "@/components/shared/ModalFact.vue";
+import { currencyByCode } from "@/utils/currency.js";
 import { emitActivity } from "@/utils/activityBus.js";
+import { usePageActivity } from "@/composables/usePageActivity.js";
+
+usePageActivity({
+  title: "Time entry opened",
+  module: "time",
+  to: "/timesheet",
+});
 
 const {
   weekOf,
@@ -294,12 +549,15 @@ const timerDraft = reactive({
   hours: 0.25,
   project: "",
   notes: "",
+  currency: "USD",
 });
 
 const timerHoursDisplay = computed(() => {
   const h = Number(timerDraft.hours);
   if (Number.isNaN(h)) return "—";
-  return (Math.round(h * 100) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 });
+  return (Math.round(h * 100) / 100).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  });
 });
 
 function openTimerConfirmFromBridge() {
@@ -310,12 +568,17 @@ function openTimerConfirmFromBridge() {
     router.replace({ path: "/timesheet", query: {} });
     return;
   }
-  timerDraft.date = typeof p.date === "string" ? p.date : new Date().toISOString().slice(0, 10);
+  timerDraft.date =
+    typeof p.date === "string" ? p.date : new Date().toISOString().slice(0, 10);
   const h = Number(p.hours);
-  timerDraft.hours = Number.isFinite(h) ? Math.min(24, Math.max(0.25, h)) : 0.25;
+  timerDraft.hours = Number.isFinite(h)
+    ? Math.min(24, Math.max(0.25, h))
+    : 0.25;
   timerDraft.project = typeof p.project === "string" ? p.project : "";
   timerDraft.notes = typeof p.notes === "string" ? p.notes : "";
-  timerTrackedLabel.value = typeof p.trackedLabel === "string" ? p.trackedLabel : "";
+  timerDraft.currency = typeof p.currency === "string" ? p.currency : "USD";
+  timerTrackedLabel.value =
+    typeof p.trackedLabel === "string" ? p.trackedLabel : "";
   timerConfirmOpen.value = true;
   nextTick(() => {
     router.replace({ path: "/timesheet", query: {} });
@@ -355,16 +618,24 @@ function confirmTimerEntry() {
     hours: h,
     project,
     notes: timerDraft.notes?.trim() || "",
+    currency: timerDraft.currency || "USD",
   });
   emitActivity({
     title: "Timer saved to timesheet",
     message: `${h}h · ${project}`,
     module: "time",
+    toast: false,
+    silent: true,
+    severity: "success",
+    context: { event: "timer_saved" },
   });
   resetTimer();
   timerConfirmOpen.value = false;
   timerTrackedLabel.value = "";
-  toast.success("Tracked time added to your timesheet.", { module: "time", action: "create" });
+  toast.success("Tracked time added to your timesheet.", {
+    module: "time",
+    action: "create",
+  });
 }
 
 function cancelTimerEntry() {
@@ -377,6 +648,7 @@ const form = reactive({
   hours: 8,
   project: "",
   notes: "",
+  currency: "USD",
 });
 
 const viewOpen = ref(false);
@@ -389,6 +661,7 @@ const editForm = reactive({
   hours: 8,
   project: "",
   notes: "",
+  currency: "USD",
 });
 
 const rules = {
@@ -428,6 +701,7 @@ function openEditForEntry(row) {
   editForm.hours = row.hours;
   editForm.project = row.project;
   editForm.notes = row.notes || "";
+  editForm.currency = row.currency || "USD";
   ev$.value.$reset();
   editOpen.value = true;
 }
@@ -485,6 +759,9 @@ function onSubmit() {
     title: "Time entry added",
     message: `${form.hours}h · ${form.project}`,
     module: "time",
+    toast: false,
+    silent: true,
+    context: { event: "time_entry" },
   });
   toast.success("Time entry added.", { module: "time", action: "create" });
   form.notes = "";
@@ -499,6 +776,7 @@ function saveEdit() {
     hours: Number(editForm.hours),
     project: editForm.project.trim(),
     notes: editForm.notes?.trim() || "",
+    currency: editForm.currency || "USD",
   });
   toast.success("Entry updated.", { module: "time", action: "update" });
   editOpen.value = false;

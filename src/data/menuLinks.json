@@ -9,5 +9,7 @@
   { "ordinal": 8, "icon": "benefits", "title": "benefits", "path": "benefits", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
   { "ordinal": 9, "icon": "documents", "title": "documents", "path": "docs", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
   { "ordinal": 10, "icon": "organizational-chart", "title": "organizational_chart", "path": "orgchart", "enabled": true, "allowedRoles": ["admin", "employee"] },
-  { "ordinal": 11, "icon": "my-team", "title": "my_team", "path": "my-team", "enabled": true, "allowedRoles": ["admin", "employee"] }
+  { "ordinal": 11, "icon": "my-team", "title": "my_team", "path": "my-team", "enabled": true, "allowedRoles": ["admin", "employee"] },
+  { "ordinal": 20, "icon": "activity", "title": "activity", "path": "activity", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] },
+  { "ordinal": 21, "icon": "settings", "title": "settings", "path": "settings", "enabled": true, "allowedRoles": ["admin", "employee", "candidate"] }
 ]

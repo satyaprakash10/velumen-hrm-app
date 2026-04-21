@@ -4,9 +4,20 @@ const toasts = ref([]);
 let seq = 0;
 
 /**
+ * Toast lifetimes are tuned to feel glanceable — a quick pop, read the line,
+ * gone. Errors stick around a touch longer so the user can actually parse
+ * what went wrong before it disappears.
+ */
+const TOAST_MS = {
+  success: 2400,
+  info: 2600,
+  error: 3600,
+};
+
+/**
  * @param {string} message
  * @param {'success'|'error'|'info'} type
- * @param {{ module?: string, action?: string }} [opts] module e.g. leaves, time, documents; action e.g. delete, download
+ * @param {{ module?: string, action?: string, duration?: number }} [opts]
  */
 export function useToast() {
   function push(message, type = "info", opts = {}) {
@@ -16,7 +27,9 @@ export function useToast() {
         ? { module: opts, action: undefined }
         : { module: opts?.module, action: opts?.action };
     toasts.value = [...toasts.value, { id, message, type, ...payload }];
-    const ms = type === "error" ? 5200 : 3800;
+    const ms = Number.isFinite(opts?.duration)
+      ? Math.max(800, opts.duration)
+      : TOAST_MS[type] ?? TOAST_MS.info;
     window.setTimeout(() => dismiss(id), ms);
     return id;
   }

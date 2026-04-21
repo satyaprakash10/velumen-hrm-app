@@ -1,14 +1,34 @@
 <template>
   <div class="min-h-full bg-page-bg px-4 py-6 md:px-10 md:py-8">
     <div class="mx-auto max-w-[1100px]">
-      <h1
-        class="mb-6 text-[26px] font-bold leading-tight tracking-tight text-gray-900 md:text-[28px]"
-      >
-        My payslips
-      </h1>
+      <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1
+            class="text-[26px] font-bold leading-tight tracking-tight text-gray-900 md:text-[28px] dark:text-slate-100"
+          >
+            My payslips
+          </h1>
+          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Historical slips from payroll plus an on-demand generator that reads your tracked hours.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="accent-gradient accent-focus inline-flex h-10 items-center justify-center gap-2 self-start rounded-xl px-4 text-sm font-semibold shadow-sm transition hover:brightness-110 sm:self-auto"
+          @click="generateCurrentSlip"
+        >
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v9m0 0l-3-3m3 3l3-3" />
+            <path stroke-linecap="round" d="M4 17h16" />
+          </svg>
+          Generate my slip
+        </button>
+      </div>
+
+      <PayslipHowItWorks class="mb-6" />
 
       <div
-        class="overflow-hidden rounded-xl bg-white shadow-card ring-1 ring-black/[0.04]"
+        class="overflow-hidden rounded-xl bg-white shadow-card ring-1 ring-black/[0.04] dark:bg-slate-900 dark:ring-white/5"
       >
         <CurrencyTabs v-model="activeCurrency" :tabs="currencyTabItems" />
 
@@ -93,6 +113,36 @@
 <script setup>
 import { ref, computed } from "vue";
 import { usePayslips } from "@/composables/usePayslips.js";
+import { usePageActivity } from "@/composables/usePageActivity.js";
+import PayslipHowItWorks from "@/components/payslips/PayslipHowItWorks.vue";
+import { generatePayslipPdf } from "@/utils/generatePayslip.js";
+import { useToast } from "@/composables/useToast.js";
+import { emitActivity } from "@/utils/activityBus.js";
+
+usePageActivity({
+  title: "Payslips opened",
+  module: "payroll",
+  to: "/my-payslips",
+});
+
+const toastHost = useToast();
+
+function generateCurrentSlip() {
+  const slip = generatePayslipPdf();
+  toastHost.success(
+    `Generated ${slip.periodLabel} payslip for ${slip.employee.name}.`,
+    { module: "payroll", action: "download" },
+  );
+  emitActivity({
+    title: "Payslip generated",
+    message: `${slip.periodLabel} · net ${slip.currency} ${slip.net.toFixed(2)}`,
+    module: "payroll",
+    severity: "success",
+    toast: false,
+    silent: true,
+    context: { event: "payslip_generate", period: slip.periodLabel },
+  });
+}
 import CurrencyTabs from "@/components/payslips/CurrencyTabs.vue";
 import PayslipTable from "@/components/payslips/PayslipTable.vue";
 import SalaryModal from "@/components/payslips/SalaryModal.vue";

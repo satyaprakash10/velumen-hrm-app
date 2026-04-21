@@ -46,8 +46,8 @@
             v-for="col in columns"
             :key="col.id"
             :data-task-column="col.id"
-            class="flex min-h-0 w-[min(100%,280px)] shrink-0 flex-col rounded-2xl border border-slate-200/90 bg-white/90 shadow-sm transition-[box-shadow] duration-200 dark:border-slate-800 dark:bg-slate-900/90"
-            :class="dragOverColId === col.id ? 'ring-2 ring-sky-400 ring-offset-2 ring-offset-white dark:ring-sky-500 dark:ring-offset-slate-950' : ''"
+            class="task-column relative flex min-h-0 w-[min(100%,280px)] shrink-0 flex-col rounded-2xl border-2 bg-white/90 shadow-sm transition-colors duration-200 dark:bg-slate-900/90"
+            :class="columnClasses(col.id)"
           >
             <header class="shrink-0 border-b border-slate-100 px-4 py-3 dark:border-slate-800">
               <h2 class="text-sm font-semibold text-navy dark:text-slate-100">{{ col.title }}</h2>
@@ -56,14 +56,15 @@
             <div
               class="scrollbar-kit flex min-h-0 max-h-[min(65vh,560px)] flex-1 flex-col gap-2 overflow-y-auto p-3"
             >
-              <TransitionGroup name="task-card" tag="div" class="flex flex-col gap-2">
+              <div class="flex flex-col gap-2">
                 <article
                   v-for="t in filteredTasksByColumn[col.id] || []"
                   :key="t.id"
-                  class="group relative cursor-grab touch-manipulation rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-[transform,box-shadow,opacity,border-color] duration-200 ease-out hover:border-sky-300 hover:shadow-md active:cursor-grabbing dark:border-slate-700 dark:bg-slate-950 dark:hover:border-sky-600"
+                  class="task-card group relative cursor-grab touch-manipulation rounded-xl border border-slate-200 bg-white p-3 shadow-sm hover:border-sky-300 hover:shadow-md active:cursor-grabbing dark:border-slate-700 dark:bg-slate-950 dark:hover:border-sky-600"
                   :class="[
-                    draggingId === t.id ? 'scale-[0.98] opacity-60 ring-2 ring-sky-400' : '',
-                    draggingId === t.id ? 'touch-none select-none' : '',
+                    draggingId === t.id
+                      ? 'task-card--slot border-dashed border-slate-300 opacity-40 dark:border-slate-600'
+                      : 'transition-[box-shadow,border-color] duration-200 ease-out',
                   ]"
                   @pointerdown="onCardPointerDown($event, t, col.id)"
                 >
@@ -72,6 +73,18 @@
                       :aria-label="`Actions for ${t.title}`"
                       :items="cardMenuItems(t)"
                       placement="bottom-end"
+                    />
+                  </div>
+                  <div
+                    v-if="coverImage(t)"
+                    class="-mx-3 -mt-3 mb-3 aspect-[16/9] overflow-hidden rounded-t-xl bg-slate-100 dark:bg-slate-800"
+                  >
+                    <img
+                      :src="coverImage(t)"
+                      :alt="`${t.title} cover`"
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                      draggable="false"
                     />
                   </div>
                   <p class="pr-8 text-sm font-medium text-gray-900 dark:text-gray-100">{{ t.title }}</p>
@@ -90,9 +103,32 @@
                       {{ tag }}
                     </span>
                   </div>
-                  <p v-if="(t.comments || []).length" class="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
-                    {{ (t.comments || []).length }} comment(s)
-                  </p>
+                  <div v-if="(t.comments || []).length || (t.attachments || []).length || (t.subtasks || []).length" class="mt-2 flex items-center gap-3 text-[11px] text-gray-500 dark:text-gray-400">
+                    <span v-if="(t.comments || []).length" class="inline-flex items-center gap-1">
+                      <svg class="h-3 w-3" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M2.5 4a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0113.5 4v5A1.5 1.5 0 0112 10.5H6L3 13V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                      </svg>
+                      {{ (t.comments || []).length }}
+                    </span>
+                    <span v-if="(t.attachments || []).length" class="inline-flex items-center gap-1">
+                      <svg class="h-3 w-3" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M11 5.5l-5 5a2 2 0 102.8 2.8l6-6a3.4 3.4 0 10-4.8-4.8l-6 6a4.8 4.8 0 106.8 6.8L14 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      {{ (t.attachments || []).length }}
+                    </span>
+                    <span
+                      v-if="(t.subtasks || []).length"
+                      class="inline-flex items-center gap-1 tabular-nums"
+                      :class="subtasksComplete(t) ? 'text-emerald-600 dark:text-emerald-400' : ''"
+                    >
+                      <svg class="h-3 w-3" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <rect x="2.5" y="3" width="11" height="3" rx="0.8" stroke="currentColor" stroke-width="1.4" />
+                        <rect x="2.5" y="10" width="11" height="3" rx="0.8" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M4.6 4.5l0.9 0.9L7 3.9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      {{ subtaskDoneCount(t) }}/{{ (t.subtasks || []).length }}
+                    </span>
+                  </div>
                   <div
                     v-if="timerTaskId === t.id && !timerIdle"
                     class="mt-2 flex flex-wrap items-center gap-2"
@@ -132,7 +168,7 @@
                     </button>
                   </div>
                 </article>
-              </TransitionGroup>
+              </div>
             </div>
           </section>
         </div>
@@ -243,6 +279,20 @@
             />
             <p v-if="formErrors.column" class="-mt-2 text-xs text-red-600">{{ formErrors.column }}</p>
             <TagMultiPicker v-model="draft.tags" label="Tags" :suggested-tags="uniqueTags" hint="Type to search, Enter to add a tag. Optional." />
+
+            <div>
+              <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Attachments</span>
+              <TaskAttachmentField v-model="draft.attachments" class="mt-1.5 block" />
+            </div>
+
+            <TaskSubtasks
+              :items="draft.subtasks"
+              @add="onDraftSubtaskAdd"
+              @toggle="onDraftSubtaskToggle"
+              @update="onDraftSubtaskUpdate"
+              @remove="onDraftSubtaskRemove"
+              @reorder="onDraftSubtaskReorder"
+            />
           </div>
           <div class="mt-auto flex flex-wrap gap-2 border-t border-slate-100 pt-6 dark:border-slate-800">
             <button type="submit" :class="btnPrimaryClass" class="inline-flex items-center gap-2">
@@ -257,13 +307,20 @@
       </aside>
     </Transition>
 
-    <ModalPanel v-model="detailOpen">
+    <ModalPanel v-model="detailOpen" :icon="TASK_MODAL_ICON" expandable>
       <template #title>{{ active?.title }}</template>
       <template #subtitle>
         <span v-if="active && projectLabel(active.projectId)">{{ projectLabel(active.projectId) }}</span>
       </template>
       <div class="space-y-4">
-        <p v-if="active?.description" class="text-sm text-slate-700 dark:text-slate-300">{{ active.description }}</p>
+        <AttachmentGallery
+          v-if="active && (active.attachments || []).length"
+          :attachments="active.attachments"
+        />
+        <ExpandableText
+          v-if="active?.description"
+          :text="active.description"
+        />
         <div v-if="(active?.tags || []).length" class="flex flex-wrap gap-1">
           <span
             v-for="tag in active.tags"
@@ -273,6 +330,15 @@
             {{ tag }}
           </span>
         </div>
+        <TaskSubtasks
+          v-if="active"
+          :items="active.subtasks || []"
+          @add="onDetailSubtaskAdd"
+          @toggle="onDetailSubtaskToggle"
+          @update="onDetailSubtaskUpdate"
+          @remove="onDetailSubtaskRemove"
+          @reorder="onDetailSubtaskReorder"
+        />
         <div v-if="active">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-400">Column</label>
           <ListboxField
@@ -371,6 +437,58 @@
       variant="danger"
       @confirm="onDeleteConfirmed"
     />
+
+    <!--
+      Drag ghost — teleported out of the kanban scroll containers so the card
+      floats above every column and never gets clipped by `overflow` rules.
+      The in-place card remains as a dashed placeholder so other cards don't
+      jump around while the user is mid-drag.
+    -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-150 ease-out"
+        leave-active-class="transition duration-150 ease-in"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <article
+          v-if="draggingTask"
+          class="drag-ghost rounded-xl border border-sky-400 bg-white p-3 shadow-[0_30px_60px_rgba(56,189,248,0.38)] dark:border-sky-500 dark:bg-slate-950"
+          :style="dragGhostStyle"
+          aria-hidden="true"
+        >
+          <p class="pr-6 text-sm font-medium text-gray-900 dark:text-gray-100">
+            {{ draggingTask.title }}
+          </p>
+          <p
+            v-if="draggingTask.description"
+            class="mt-1 line-clamp-2 text-xs text-slate-600 dark:text-slate-400"
+          >
+            {{ draggingTask.description }}
+          </p>
+          <p
+            v-if="projectLabel(draggingTask.projectId)"
+            class="mt-1 text-xs text-sky-700 dark:text-sky-300"
+          >
+            {{ projectLabel(draggingTask.projectId) }}
+          </p>
+          <div
+            v-if="(draggingTask.tags || []).length"
+            class="mt-2 flex flex-wrap gap-1"
+          >
+            <span
+              v-for="tag in draggingTask.tags"
+              :key="tag"
+              class="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+            >
+              {{ tag }}
+            </span>
+          </div>
+        </article>
+      </transition>
+    </Teleport>
   </div>
 </template>
 
@@ -387,12 +505,29 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog.vue";
 import DropdownMenu from "@/components/ui/DropdownMenu.vue";
 import ListboxField from "@/components/ui/ListboxField.vue";
 import TagMultiPicker from "@/components/ui/TagMultiPicker.vue";
+import TaskAttachmentField from "@/components/ui/TaskAttachmentField.vue";
+import AttachmentGallery from "@/components/ui/AttachmentGallery.vue";
+import TaskSubtasks from "@/components/ui/TaskSubtasks.vue";
+import ExpandableText from "@/components/ui/ExpandableText.vue";
 
 const route = useRoute();
 const router = useRouter();
 
-const { columns, tasks, getById, addTask, updateTask, moveTask, addComment, removeTask, cloneTask } =
-  useTaskBoard();
+const {
+  columns,
+  tasks,
+  getById,
+  addTask,
+  updateTask,
+  moveTask,
+  addComment,
+  removeTask,
+  cloneTask,
+  addSubtask,
+  updateSubtask,
+  removeSubtask,
+  reorderSubtasks,
+} = useTaskBoard();
 const { projects, findById } = useProjects();
 const toast = useToast();
 const {
@@ -411,8 +546,35 @@ const {
 
 const drawerTitleId = useId();
 
+const TASK_MODAL_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="h-full w-full"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 10l2 2 4-4"/></svg>`;
+
 const draggingId = ref(null);
 const dragOverColId = ref(null);
+const dragOffset = ref({ x: 0, y: 0 });
+// Captured once at drag start — the original card's viewport position & size.
+// The ghost clone (teleported to <body>) uses this as its anchor so it floats
+// above columns regardless of their overflow clipping rules.
+const dragOrigin = ref({ left: 0, top: 0, width: 0, height: 0 });
+
+const draggingTask = computed(() =>
+  draggingId.value ? getById(draggingId.value) : null,
+);
+
+const dragGhostStyle = computed(() => {
+  if (!draggingId.value) return null;
+  const { left, top, width, height } = dragOrigin.value;
+  const { x, y } = dragOffset.value;
+  return {
+    position: "fixed",
+    left: `${left + x}px`,
+    top: `${top + y}px`,
+    width: `${width}px`,
+    height: `${height}px`,
+    pointerEvents: "none",
+    zIndex: 9999,
+    willChange: "transform",
+  };
+});
 
 const drawerOpen = ref(false);
 const drawerMode = ref("create");
@@ -424,6 +586,8 @@ const draft = reactive({
   projectId: "",
   column: "pending",
   tags: [],
+  attachments: [],
+  subtasks: [],
 });
 
 const formErrors = reactive({
@@ -445,6 +609,24 @@ const ignoreCardOpen = ref(false);
 
 const DRAG_THRESHOLD_PX = 12;
 let cardPointerSession = null;
+
+/**
+ * Lightweight column feedback: default neutral border, a soft
+ * idle-drop indication while any card is being dragged, and a clear sky
+ * border on the column directly under the pointer. Keeps the visual noise
+ * off the column body so the moving card stays the focus.
+ */
+function columnClasses(id) {
+  const dragging = draggingId.value != null;
+  const isTarget = dragOverColId.value === id;
+  if (isTarget) {
+    return "border-sky-400 shadow-[inset_0_0_0_1px_rgba(56,189,248,0.35)] dark:border-sky-500";
+  }
+  if (dragging) {
+    return "border-slate-200/70 border-dashed dark:border-slate-700";
+  }
+  return "border-transparent dark:border-transparent";
+}
 
 function resolveColumnFromPoint(clientX, clientY) {
   if (typeof document === "undefined" || !document.elementsFromPoint) return null;
@@ -488,6 +670,16 @@ function onCardPointerDown(e, t, colId) {
     if (!cardPointerSession.moved && Math.hypot(dx, dy) <= DRAG_THRESHOLD_PX) return;
     if (!cardPointerSession.moved) {
       cardPointerSession.moved = true;
+      // Snapshot the original card rect *before* the in-place card becomes a
+      // semi-transparent slot, so the ghost clone can float right where the
+      // user picked it up.
+      const rect = cardEl.getBoundingClientRect();
+      dragOrigin.value = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      };
       draggingId.value = cardPointerSession.taskId;
       ignoreCardOpen.value = true;
       try {
@@ -496,6 +688,7 @@ function onCardPointerDown(e, t, colId) {
         /* ignore */
       }
     }
+    dragOffset.value = { x: dx, y: dy };
     dragOverColId.value = resolveColumnFromPoint(ev.clientX, ev.clientY);
     if (ev.pointerType === "touch") ev.preventDefault();
   }
@@ -517,6 +710,8 @@ function onCardPointerDown(e, t, colId) {
       }
       draggingId.value = null;
       dragOverColId.value = null;
+      dragOffset.value = { x: 0, y: 0 };
+      dragOrigin.value = { left: 0, top: 0, width: 0, height: 0 };
       window.setTimeout(() => {
         ignoreCardOpen.value = false;
       }, 120);
@@ -544,6 +739,8 @@ onUnmounted(() => {
   clearCardPointerListeners();
   draggingId.value = null;
   dragOverColId.value = null;
+  dragOffset.value = { x: 0, y: 0 };
+  dragOrigin.value = { left: 0, top: 0, width: 0, height: 0 };
 });
 
 const searchQuery = ref("");
@@ -630,6 +827,120 @@ function projectLabel(id) {
   return findById(id)?.name || "";
 }
 
+/* ------------------------------------------------------------------- *
+ *  Subtask handlers
+ *  - *Draft* handlers mutate the in-drawer draft, committed on Save.
+ *  - *Detail* handlers act on the store immediately for inline edits in
+ *    the read-only detail modal.
+ * ------------------------------------------------------------------- */
+
+function makeSubtaskId() {
+  return `st-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+}
+
+function onDraftSubtaskAdd(title) {
+  const trimmed = String(title || "").trim();
+  if (!trimmed) return;
+  draft.subtasks = [
+    ...draft.subtasks,
+    {
+      id: makeSubtaskId(),
+      title: trimmed,
+      done: false,
+      createdAt: new Date().toISOString(),
+    },
+  ];
+}
+
+function onDraftSubtaskToggle({ id, done }) {
+  draft.subtasks = draft.subtasks.map((s) =>
+    s.id === id ? { ...s, done: Boolean(done) } : s,
+  );
+}
+
+function onDraftSubtaskUpdate({ id, title }) {
+  const trimmed = String(title || "").trim();
+  if (!trimmed) return;
+  draft.subtasks = draft.subtasks.map((s) =>
+    s.id === id ? { ...s, title: trimmed } : s,
+  );
+}
+
+function onDraftSubtaskRemove({ id }) {
+  draft.subtasks = draft.subtasks.filter((s) => s.id !== id);
+}
+
+function onDraftSubtaskReorder({ fromIndex, toIndex }) {
+  const list = [...draft.subtasks];
+  if (
+    fromIndex < 0 ||
+    toIndex < 0 ||
+    fromIndex >= list.length ||
+    toIndex >= list.length
+  ) {
+    return;
+  }
+  const [moved] = list.splice(fromIndex, 1);
+  list.splice(toIndex, 0, moved);
+  draft.subtasks = list;
+}
+
+function onDetailSubtaskAdd(title) {
+  if (!active.value) return;
+  addSubtask(active.value.id, title);
+  refreshActive();
+}
+function onDetailSubtaskToggle({ id, done }) {
+  if (!active.value) return;
+  updateSubtask(active.value.id, id, { done });
+  refreshActive();
+}
+function onDetailSubtaskUpdate({ id, title }) {
+  if (!active.value) return;
+  updateSubtask(active.value.id, id, { title });
+  refreshActive();
+}
+function onDetailSubtaskRemove({ id }) {
+  if (!active.value) return;
+  removeSubtask(active.value.id, id);
+  refreshActive();
+}
+function onDetailSubtaskReorder({ fromIndex, toIndex }) {
+  if (!active.value) return;
+  reorderSubtasks(active.value.id, fromIndex, toIndex);
+  refreshActive();
+}
+
+function refreshActive() {
+  if (!active.value) return;
+  const fresh = getById(active.value.id);
+  if (fresh) active.value = fresh;
+}
+
+function subtaskDoneCount(t) {
+  return (t?.subtasks || []).filter((s) => s.done).length;
+}
+
+function subtasksComplete(t) {
+  const list = t?.subtasks || [];
+  return list.length > 0 && list.every((s) => s.done);
+}
+
+/**
+ * First image attachment becomes the card's cover photo. Non-image
+ * attachments (PDFs etc.) don't show on the card — they live in the detail
+ * modal's gallery instead.
+ */
+function coverImage(t) {
+  const atts = t?.attachments || [];
+  for (const a of atts) {
+    if (typeof a?.type === "string" && a.type.startsWith("image/") && a.dataUrl) {
+      return a.dataUrl;
+    }
+  }
+  return null;
+}
+
 function resetFormErrors() {
   formErrors.title = "";
   formErrors.description = "";
@@ -669,6 +980,8 @@ function openCreateDrawer() {
   draft.projectId = "";
   draft.column = "pending";
   draft.tags = [];
+  draft.attachments = [];
+  draft.subtasks = [];
   resetFormErrors();
   drawerOpen.value = true;
 }
@@ -681,6 +994,8 @@ function openEditDrawer(t) {
   draft.projectId = t.projectId || "";
   draft.column = t.column || "pending";
   draft.tags = [...(t.tags || [])];
+  draft.attachments = (t.attachments || []).map((a) => ({ ...a }));
+  draft.subtasks = (t.subtasks || []).map((s) => ({ ...s }));
   resetFormErrors();
   drawerOpen.value = true;
   detailOpen.value = false;
@@ -698,6 +1013,8 @@ function saveDrawer() {
     projectId: draft.projectId || "",
     column: draft.column,
     tags: [...draft.tags],
+    attachments: draft.attachments.map((a) => ({ ...a })),
+    subtasks: draft.subtasks.map((s) => ({ ...s })),
   };
   if (drawerMode.value === "edit" && editingId.value) {
     updateTask(editingId.value, payload);
@@ -879,14 +1196,43 @@ watch(detailOpen, (open) => {
 </script>
 
 <style scoped>
-.task-card-move,
-.task-card-enter-active,
-.task-card-leave-active {
-  transition: all 0.22s ease;
+/*
+ * The in-place card is replaced with a dashed slot so siblings don't shift
+ * while the user is dragging. The actual moving card is a teleported ghost
+ * clone (see the Teleport block above) which renders above every column and
+ * never gets clipped by a scroll container's overflow rules.
+ */
+.task-card--slot {
+  cursor: grabbing;
+  transition:
+    opacity 0.12s ease,
+    border-color 0.12s ease;
 }
-.task-card-enter-from,
-.task-card-leave-to {
-  opacity: 0;
-  transform: translateY(6px);
+
+.task-column {
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+</style>
+
+<style>
+/* Unscoped so the Teleport-rendered ghost inherits the rotation + cursor. */
+.drag-ghost {
+  transform: rotate(-1.8deg);
+  cursor: grabbing;
+  transition:
+    transform 0.12s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s ease;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-card--slot,
+  .task-column,
+  .drag-ghost {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 </style>

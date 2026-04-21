@@ -80,11 +80,28 @@ export function useUser() {
     }
   }
 
+  /**
+   * Cover image sits behind the avatar on the profile page. Accepts a data
+   * URL (from FileReader) or null/"" to clear. Stored in the same per-user
+   * profile bucket so it survives reloads like the rest of the profile data.
+   */
+  function setCoverPreview(dataUrl) {
+    const value = dataUrl || "";
+    profile.value = { ...profile.value, coverUrl: value };
+    if (!authUser.value?.id) return;
+    try {
+      localStorage.setItem(authStorageKey(STORAGE_BASE), JSON.stringify(profile.value));
+    } catch {
+      /* ignore */
+    }
+  }
+
   return {
     profile,
     displayName,
     initials,
     saveProfile,
     setAvatarPreview,
+    setCoverPreview,
   };
 }

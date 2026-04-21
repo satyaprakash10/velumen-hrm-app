@@ -52,18 +52,28 @@ export function usePayslips() {
   const activeCurrency = ref("USD");
   const currencyQueryInvalid = ref(false);
 
+  // Always surface the three standard currency slots (USD / EUR / INR) so the
+  // payslip tabs stay stable — new currencies showing up in the seed data are
+  // appended after, still with their real counts.
+  const STANDARD_CURRENCIES = ["USD", "EUR", "INR"];
+
   const availableCurrencies = computed(() => {
-    const set = new Set(visiblePayslipsRaw.value.map(getCurrency));
-    return [...set].sort((a, b) => {
-      if (a === "USD") return -1;
-      if (b === "USD") return 1;
-      return a.localeCompare(b);
-    });
+    const seen = new Set(visiblePayslipsRaw.value.map(getCurrency));
+    const ordered = [...STANDARD_CURRENCIES];
+    for (const code of seen) {
+      if (!ordered.includes(code)) ordered.push(code);
+    }
+    return ordered;
   });
 
-  const defaultCurrency = computed(
-    () => availableCurrencies.value[0] || "USD",
-  );
+  const defaultCurrency = computed(() => {
+    // Prefer the first standard currency that actually has rows; fall back to
+    // the very first standard slot so the table still renders.
+    const withRows = STANDARD_CURRENCIES.find((code) =>
+      visiblePayslipsRaw.value.some((p) => getCurrency(p) === code),
+    );
+    return withRows || availableCurrencies.value[0] || "USD";
+  });
 
   const currencyTabItems = computed(() =>
     availableCurrencies.value.map((code) => ({

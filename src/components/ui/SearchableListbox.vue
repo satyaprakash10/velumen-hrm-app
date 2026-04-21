@@ -17,7 +17,24 @@
         >{{ selectedFlag }}</span>
         <span class="min-w-0 truncate">{{ displayText }}</span>
       </span>
-      <svg class="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <svg
+        v-if="loading"
+        class="h-4 w-4 shrink-0 animate-spin text-slate-400 dark:text-slate-500"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.25" />
+        <path stroke-linecap="round" stroke="currentColor" stroke-width="2" d="M21 12a9 9 0 00-9-9" />
+      </svg>
+      <svg
+        v-else
+        class="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
       </svg>
     </button>
@@ -89,6 +106,7 @@ const props = defineProps({
   placeholder: { type: String, default: "Select…" },
   invalid: { type: Boolean, default: false },
   searchable: { type: Boolean, default: true },
+  loading: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["update:modelValue"]);

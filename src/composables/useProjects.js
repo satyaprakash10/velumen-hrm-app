@@ -84,6 +84,9 @@ export function useProjects() {
       title: "Project created",
       message: name,
       module: "projects",
+      toast: false,
+      silent: true,
+      context: { event: "project_create" },
     });
     return p;
   }
@@ -102,6 +105,9 @@ export function useProjects() {
       title: "Project updated",
       message: next.name,
       module: "projects",
+      toast: false,
+      silent: true,
+      context: { event: "project_update" },
     });
     return true;
   }
@@ -114,6 +120,10 @@ export function useProjects() {
         title: "Project removed",
         message: p.name,
         module: "projects",
+        toast: false,
+        silent: true,
+        severity: "warning",
+        context: { event: "project_delete" },
       });
     }
   }

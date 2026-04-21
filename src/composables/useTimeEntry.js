@@ -9,15 +9,22 @@ let idSeq = 0;
 
 const weekOf = ref(seed.weekOf);
 const expectedHours = ref(seed.expectedHours);
-const entries = ref([]);
+// Exported so the payslip generator (and other passive consumers) can derive
+// summaries from the user's tracked hours without instantiating the full
+// composable / subscribing to its lifecycle hooks.
+export const entries = ref([]);
+
+const ALLOWED_CURRENCIES = new Set(["USD", "EUR", "INR"]);
 
 function normalizeEntry(e) {
+  const code = String(e.currency || "USD").toUpperCase();
   return {
     ...e,
     id: e.id || `te-${++idSeq}`,
     hours: Number(e.hours || 0),
     project: String(e.project || "").trim(),
     notes: String(e.notes || "").trim(),
+    currency: ALLOWED_CURRENCIES.has(code) ? code : "USD",
   };
 }
 
@@ -100,6 +107,7 @@ export function useTimeEntry() {
         hours: Number(row.hours),
         project: row.project.trim(),
         notes: row.notes?.trim() || "",
+        currency: row.currency || "USD",
       }),
     ];
   }

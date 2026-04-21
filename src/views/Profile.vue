@@ -7,43 +7,99 @@
       </p>
 
       <form
-        class="mt-8 space-y-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors md:p-8 dark:border-slate-800 dark:bg-slate-900"
+        class="mt-8 space-y-8 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900"
         @submit.prevent="onSave"
       >
-        <div class="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-          <div class="relative">
+        <!--
+          Cover image + avatar header. The cover slot accepts any image up to
+          4MB; it's persisted per-user via useUser.setCoverPreview. When the
+          user hasn't uploaded one yet we show a soft accent gradient so the
+          card still feels finished.
+        -->
+        <div class="relative -mb-2">
+          <div
+            class="relative h-36 w-full overflow-hidden sm:h-44"
+            :class="local.coverUrl ? '' : 'accent-gradient'"
+          >
+            <img
+              v-if="local.coverUrl"
+              :src="local.coverUrl"
+              alt=""
+              class="h-full w-full object-cover"
+              draggable="false"
+            />
             <div
-              class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-[#E8EDF3] text-xl font-semibold text-navy ring-2 ring-white shadow-md dark:bg-slate-800 dark:text-slate-100"
-            >
-              <img
-                v-if="local.avatarUrl"
-                :src="local.avatarUrl"
-                alt=""
-                class="h-full w-full object-cover"
-              />
-              <span v-else>{{ initials }}</span>
+              v-else
+              class="pointer-events-none absolute inset-0 opacity-40 [background-image:radial-gradient(rgba(255,255,255,0.35)_1px,transparent_1px)] [background-size:18px_18px]"
+              aria-hidden="true"
+            />
+            <div class="absolute right-3 top-3 flex items-center gap-1.5">
+              <label
+                class="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-lg bg-white/85 px-2.5 text-[12px] font-semibold text-slate-800 shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition hover:bg-white focus-within:ring-2 focus-within:ring-sky-500/30 dark:bg-slate-900/85 dark:text-slate-100 dark:ring-white/10 dark:hover:bg-slate-900"
+              >
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 7.5l4-4h8l4 4v11a2 2 0 01-2 2H6a2 2 0 01-2-2v-11z" />
+                  <circle cx="12" cy="13" r="3.4" />
+                </svg>
+                {{ local.coverUrl ? "Change cover" : "Upload cover" }}
+                <input
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  @change="onCover"
+                />
+              </label>
+              <button
+                v-if="local.coverUrl"
+                type="button"
+                class="inline-flex h-8 items-center gap-1 rounded-lg bg-white/85 px-2 text-[12px] font-semibold text-rose-600 shadow-sm ring-1 ring-black/5 backdrop-blur-sm transition hover:bg-white hover:text-rose-700 dark:bg-slate-900/85 dark:text-rose-300 dark:ring-white/10 dark:hover:bg-slate-900"
+                aria-label="Remove cover image"
+                @click="removeCover"
+              >
+                <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            <label
-              class="absolute bottom-0 right-0 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-navy text-white shadow-md transition hover:bg-navy/90 dark:bg-sky-600 dark:hover:bg-sky-500"
-            >
-              <span class="sr-only">Upload photo</span>
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <input
-                type="file"
-                accept="image/*"
-                class="hidden"
-                @change="onAvatar"
-              />
-            </label>
           </div>
-          <div class="min-w-0 flex-1 text-center sm:text-left">
-            <p class="font-semibold text-gray-900 dark:text-gray-100">{{ displayName }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ profile.role }} · {{ profile.employeeId }}</p>
+
+          <div class="relative flex flex-col items-center gap-4 px-6 pb-2 pt-0 sm:flex-row sm:items-end sm:gap-5 md:px-8">
+            <div class="relative -mt-12 sm:-mt-14">
+              <div
+                class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-[#E8EDF3] text-xl font-semibold text-navy ring-4 ring-white shadow-md dark:bg-slate-800 dark:text-slate-100 dark:ring-slate-900"
+              >
+                <img
+                  v-if="local.avatarUrl"
+                  :src="local.avatarUrl"
+                  alt=""
+                  class="h-full w-full object-cover"
+                />
+                <span v-else>{{ initials }}</span>
+              </div>
+              <label
+                class="absolute bottom-0 right-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-navy text-white shadow-md ring-2 ring-white transition hover:bg-navy/90 dark:bg-sky-600 dark:ring-slate-900 dark:hover:bg-sky-500"
+              >
+                <span class="sr-only">Upload photo</span>
+                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <input
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  @change="onAvatar"
+                />
+              </label>
+            </div>
+            <div class="min-w-0 flex-1 text-center sm:pb-1 sm:text-left">
+              <p class="text-[16px] font-semibold text-gray-900 dark:text-gray-100">{{ displayName }}</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{ profile.role }} · {{ profile.employeeId }}</p>
+            </div>
           </div>
         </div>
+
+        <div class="space-y-8 px-6 pb-6 md:px-8 md:pb-8">
 
         <section>
           <h2 class="text-sm font-semibold text-navy dark:text-slate-100">Personal</h2>
@@ -118,9 +174,6 @@
               <p v-if="v$.phoneNational.$error" class="mt-1 text-xs text-red-600 dark:text-red-400" role="alert">
                 {{ v$.phoneNational.$errors[0]?.$message }}
               </p>
-              <p v-else class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-                Enter your national number without the country code. Leave blank if you prefer not to share a phone.
-              </p>
             </label>
           </div>
         </section>
@@ -129,10 +182,6 @@
           <h2 class="text-sm font-semibold text-navy dark:text-slate-100">
             Position &amp; reporting
           </h2>
-          <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-            How you’re set up in the org chart: your title, team, who you report to, and where you usually work.
-            Updates here are stored on this device for the signed-in account.
-          </p>
           <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="sm:col-span-2">
               <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Job title</span>
@@ -167,22 +216,35 @@
                 v-model="local.location"
                 class="mt-1.5 block"
                 :invalid="false"
-                placeholder="Search a place (Google) or type manually"
+                placeholder="Search a city or country…"
               />
-              <p class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-                With a Maps API key, suggestions appear as you type. Otherwise this is a standard text field.
-              </p>
             </div>
           </div>
         </section>
 
         <div class="flex flex-wrap items-center gap-3">
           <button type="submit" :class="btnPrimaryClass">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-8H7v8M7 3v5h8" />
+            </svg>
             Save changes
+          </button>
+          <button
+            type="button"
+            class="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            @click="onReset"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1015.364-6.364" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18 3v6h-6" />
+            </svg>
+            Reset
           </button>
           <p v-if="savedHint" class="text-sm text-emerald-700 dark:text-emerald-400" role="status">
             {{ savedHint }}
           </p>
+        </div>
         </div>
       </form>
     </div>
@@ -206,7 +268,7 @@ import {
   isPhoneValidForCountry,
 } from "@/utils/phone.js";
 
-const { profile, displayName, initials, saveProfile, setAvatarPreview } = useUser();
+const { profile, displayName, initials, saveProfile, setAvatarPreview, setCoverPreview } = useUser();
 
 const parsed = splitStoredPhone(profile.value.phone, profile.value.countryCode || "US");
 
@@ -215,9 +277,11 @@ const local = reactive({
   countryCode: parsed.countryCode,
   phoneNational: parsed.national,
   location: profile.value.location || "",
+  coverUrl: profile.value.coverUrl || "",
 });
 
 const savedHint = ref("");
+const COVER_MAX_BYTES = 4 * 1024 * 1024;
 
 const countryOptions = countries.map((c) => ({
   value: c.code,
@@ -316,6 +380,24 @@ function onSave() {
   v$.value.$reset();
 }
 
+function onReset() {
+  const parsedReset = splitStoredPhone(
+    profile.value.phone,
+    profile.value.countryCode || "US",
+  );
+  Object.assign(local, profile.value, {
+    countryCode: parsedReset.countryCode,
+    phoneNational: parsedReset.national,
+    location: profile.value.location || "",
+    coverUrl: profile.value.coverUrl || "",
+  });
+  v$.value.$reset();
+  savedHint.value = "Changes discarded.";
+  window.setTimeout(() => {
+    savedHint.value = "";
+  }, 2400);
+}
+
 function onAvatar(e) {
   const file = e.target?.files?.[0];
   if (!file || !file.type.startsWith("image/")) return;
@@ -325,5 +407,40 @@ function onAvatar(e) {
   };
   reader.readAsDataURL(file);
   e.target.value = "";
+}
+
+function onCover(e) {
+  const file = e.target?.files?.[0];
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    savedHint.value = "Please choose an image file.";
+    window.setTimeout(() => (savedHint.value = ""), 2400);
+    e.target.value = "";
+    return;
+  }
+  if (file.size > COVER_MAX_BYTES) {
+    savedHint.value = "Cover image must be under 4 MB.";
+    window.setTimeout(() => (savedHint.value = ""), 2400);
+    e.target.value = "";
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    if (typeof reader.result === "string") {
+      setCoverPreview(reader.result);
+      local.coverUrl = reader.result;
+      savedHint.value = "Cover image updated.";
+      window.setTimeout(() => (savedHint.value = ""), 2400);
+    }
+  };
+  reader.readAsDataURL(file);
+  e.target.value = "";
+}
+
+function removeCover() {
+  setCoverPreview("");
+  local.coverUrl = "";
+  savedHint.value = "Cover image removed.";
+  window.setTimeout(() => (savedHint.value = ""), 2000);
 }
 </script>

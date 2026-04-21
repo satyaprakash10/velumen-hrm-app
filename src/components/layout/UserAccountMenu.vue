@@ -52,27 +52,56 @@
             <p class="truncate text-[13px] font-semibold leading-tight text-slate-900 dark:text-slate-100">{{ headerName }}</p>
             <p class="truncate text-[11px] leading-tight text-slate-500 dark:text-slate-400">{{ headerRole }}</p>
           </div>
-          <RouterLink
-            to="/my-information"
-            role="menuitem"
-            class="flex items-center gap-2 px-2.5 py-2 text-[13px] font-medium text-slate-800 transition-colors hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
-            @click="close"
-          >
-            <span
-              class="flex h-7 w-7 items-center justify-center rounded-md bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 [&>svg]:shrink-0 [&>svg]:h-3.5 [&>svg]:w-3.5"
-              aria-hidden="true"
-              v-html="profileIcon"
-            />
-            Profile
-          </RouterLink>
+          <div class="py-1">
+            <RouterLink
+              to="/my-information"
+              role="menuitem"
+              class="flex items-center gap-2 px-2.5 py-1.5 text-[12.5px] font-medium text-slate-800 transition-colors hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+              @click="close"
+            >
+              <span
+                class="flex h-3.5 w-3.5 items-center justify-center text-slate-500 dark:text-slate-400 [&>svg]:h-full [&>svg]:w-full"
+                aria-hidden="true"
+                v-html="profileIcon"
+              />
+              Profile
+            </RouterLink>
+            <RouterLink
+              to="/settings"
+              role="menuitem"
+              class="flex items-center gap-2 px-2.5 py-1.5 text-[12.5px] font-medium text-slate-800 transition-colors hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+              @click="close"
+            >
+              <span
+                class="flex h-3.5 w-3.5 items-center justify-center text-slate-500 dark:text-slate-400 [&>svg]:h-full [&>svg]:w-full"
+                aria-hidden="true"
+                v-html="settingsIcon"
+              />
+              Settings
+            </RouterLink>
+            <RouterLink
+              to="/activity"
+              role="menuitem"
+              class="flex items-center gap-2 px-2.5 py-1.5 text-[12.5px] font-medium text-slate-800 transition-colors hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-slate-800"
+              @click="close"
+            >
+              <span
+                class="flex h-3.5 w-3.5 items-center justify-center text-slate-500 dark:text-slate-400 [&>svg]:h-full [&>svg]:w-full"
+                aria-hidden="true"
+                v-html="activityIcon"
+              />
+              Activity
+            </RouterLink>
+          </div>
+          <hr class="my-0 border-t border-slate-100 dark:border-slate-800" role="separator" />
           <button
             type="button"
             role="menuitem"
-            class="flex w-full items-center gap-2 px-2.5 py-2 text-left text-[13px] font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+            class="flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[12.5px] font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
             @click="onSignOut"
           >
             <span
-              class="flex h-7 w-7 items-center justify-center rounded-md bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400 [&>svg]:shrink-0 [&>svg]:h-3.5 [&>svg]:w-3.5"
+              class="flex h-3.5 w-3.5 items-center justify-center text-red-500 dark:text-red-400 [&>svg]:h-full [&>svg]:w-full"
               aria-hidden="true"
               v-html="signOutIcon"
             />
@@ -93,7 +122,10 @@ import { useAuth } from "@/composables/useAuth.js";
 import { menuIconHtml } from "@/utils/menuActionIcons.js";
 
 const profileIcon = menuIconHtml("user");
+const settingsIcon = menuIconHtml("cog");
 const signOutIcon = menuIconHtml("logout");
+
+const activityIcon = `<svg viewBox="0 0 16 16" fill="none"><path d="M1.5 8h2.3l1.8-4.5L8.5 12l1.7-4 .8 1.5h3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 const router = useRouter();
 const { profile, initials } = useUser();

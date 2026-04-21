@@ -16,6 +16,8 @@ const viewModules = {
   docs: () => import("@/views/Documents.vue"),
   orgchart: () => import("@/views/OrgChart.vue"),
   "my-team": () => import("@/views/MyTeam.vue"),
+  activity: () => import("@/views/Activity.vue"),
+  settings: () => import("@/views/Settings.vue"),
 };
 
 const fallbackView = () => import("@/views/PlaceholderView.vue");
@@ -41,6 +43,12 @@ const appChildren = menuLinks
   }));
 
 const routes = [
+  {
+    path: "/welcome",
+    name: "welcome",
+    component: () => import("@/views/Landing.vue"),
+    meta: { public: true, title: "Welcome" },
+  },
   {
     path: "/login",
     name: "login",
@@ -85,11 +93,21 @@ router.beforeEach((to) => {
   const authed = !!authUser.value;
   const needsAuth = to.matched.some((r) => r.meta.requiresAuth);
   const guestOnly = to.meta.guest === true;
+  const isPublic = to.meta.public === true;
 
   if (needsAuth && !authed) {
+    // Bounce unauthenticated users to the landing page so first-time visitors
+    // see the marketing overview; they can jump to /login from there.
+    if (to.path === "/" || to.path === "/dashboard") {
+      return "/welcome";
+    }
     return { path: "/login", query: { redirect: to.fullPath } };
   }
   if (guestOnly && authed) {
+    return "/dashboard";
+  }
+  // Authenticated users visiting /welcome are sent straight into the app.
+  if (isPublic && to.name === "welcome" && authed) {
     return "/dashboard";
   }
 

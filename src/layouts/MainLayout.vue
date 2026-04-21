@@ -29,92 +29,74 @@
     >
       <AppHeader class="hidden md:flex" />
 
-      <header
-        v-if="isMobile"
-        class="flex shrink-0 flex-wrap items-center justify-end gap-2 border-b border-subtle-02 bg-white px-3 py-2.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 md:hidden"
-      >
-        <CompanySelector
-          class="mr-auto min-w-0 w-[min(14rem,calc(100%-9rem))] max-w-[60%] shrink"
-        />
-        <button
-          type="button"
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-navy transition hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
-          :aria-pressed="dark"
-          :aria-label="dark ? 'Switch to light mode' : 'Switch to dark mode'"
-          @click="toggleDark"
+      <template v-if="isMobile">
+        <header
+          class="flex shrink-0 items-center gap-1.5 border-b border-subtle-02 bg-white px-3 py-2.5 shadow-sm dark:border-gray-800 dark:bg-gray-900 md:hidden"
         >
-          <svg
-            v-if="!dark"
-            class="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <router-link
+            to="/welcome"
+            class="flex shrink-0 items-center gap-2 rounded-lg px-1.5 py-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            :aria-label="`${brandName} — go to landing`"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
-          </svg>
-          <svg
-            v-else
-            class="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--theme-nav-header-bg,#001738)] text-white shadow-sm ring-1 ring-black/10">
+              <img src="/logo-mark.svg" alt="" class="h-5 w-5 object-contain" width="20" height="20" />
+            </span>
+            <span class="hidden min-w-0 flex-col leading-tight sm:flex">
+              <span class="truncate text-[12px] font-semibold text-navy dark:text-slate-100">{{ brandName }}</span>
+            </span>
+          </router-link>
+          <CompanySelector
+            class="ml-1 mr-auto min-w-0 flex-1 max-w-[44%] shrink"
+          />
+          <GlobalSearch />
+          <NotificationCenter />
+          <button
+            type="button"
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white shadow-sm transition hover:brightness-110"
+            style="background: var(--theme-nav-header-bg, #001738)"
+            :aria-label="
+              sidebarCollapsed ? 'Open navigation menu' : 'Close navigation menu'
+            "
+            @click="sidebarCollapsed = !sidebarCollapsed"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white shadow-sm transition hover:brightness-110"
-          style="background: var(--theme-nav-header-bg, #001738)"
-          :aria-label="
-            sidebarCollapsed ? 'Open navigation menu' : 'Close navigation menu'
-          "
-          @click="sidebarCollapsed = !sidebarCollapsed"
+            <svg
+              v-if="sidebarCollapsed"
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+            <svg
+              v-else
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </header>
+        <div
+          class="flex shrink-0 items-center border-b border-subtle-02 bg-white/90 px-3 py-2 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/80 md:hidden"
         >
-          <svg
-            v-if="sidebarCollapsed"
-            class="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-          <svg
-            v-else
-            class="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </header>
+          <AppBreadcrumbs class="min-w-0 flex-1" />
+        </div>
+      </template>
 
       <main
         class="scrollbar-kit min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden"
@@ -127,7 +109,6 @@
       </main>
     </div>
 
-    <ToastStack />
     <TimeTrackerWidget />
   </div>
 </template>
@@ -136,30 +117,14 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import Sidebar from "@/components/layout/Sidebar.vue";
 import AppHeader from "@/components/layout/AppHeader.vue";
+import AppBreadcrumbs from "@/components/layout/AppBreadcrumbs.vue";
 import CompanySelector from "@/components/layout/CompanySelector.vue";
-import ToastStack from "@/components/shared/ToastStack.vue";
+import NotificationCenter from "@/components/shared/NotificationCenter.vue";
+import GlobalSearch from "@/components/shared/GlobalSearch.vue";
 import TimeTrackerWidget from "@/components/shared/TimeTrackerWidget.vue";
-import { useDarkMode } from "@/composables/useDarkMode.js";
-import { useToast } from "@/composables/useToast.js";
-import { pushNotification } from "@/composables/useNotificationCenter.js";
+import { BRAND } from "@/config/brand.js";
 
-const { dark, toggle: toggleDark } = useDarkMode();
-const toast = useToast();
-
-function onEssActivity(e) {
-  const d = e.detail || {};
-  if (d.toast !== false) {
-    toast.info(d.message || d.body || d.title || "Update", {
-      module: d.module,
-    });
-  }
-  if (d.notify !== false && (d.title || d.message || d.body)) {
-    pushNotification({
-      title: d.title || "Activity",
-      body: d.message || d.body || "",
-    });
-  }
-}
+const brandName = BRAND.name;
 
 const sidebarCollapsed = ref(false);
 const isMobile = ref(false);
@@ -182,12 +147,10 @@ function onSidebarNavigate() {
 onMounted(() => {
   handleResize();
   window.addEventListener("resize", handleResize);
-  window.addEventListener("ess-activity", onEssActivity);
 });
 
 onUnmounted(() => {
   window.removeEventListener("resize", handleResize);
-  window.removeEventListener("ess-activity", onEssActivity);
 });
 </script>
 
